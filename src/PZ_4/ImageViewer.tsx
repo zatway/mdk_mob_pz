@@ -1,0 +1,102 @@
+import React, {useState} from 'react';
+import {
+    View,
+    Image,
+    Text,
+    TouchableOpacity,
+    StyleSheet,
+    Dimensions,
+} from 'react-native';
+
+const images = [
+    require('./assets/3.jpg'),
+    require('./assets/1.jpg'),
+    require('./assets/4.jpg'),
+    require('./assets/2.jpg'),
+    require('./assets/5.jpg'),
+];
+
+const ImageViewer = () => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const handlePrevious = () => {
+        setCurrentIndex((prevIndex) =>
+            prevIndex === 0 ? images.length - 1 : prevIndex - 1
+        );
+    };
+
+    const handleNext = () => {
+        setCurrentIndex((prevIndex) =>
+            prevIndex === images.length - 1 ? 0 : prevIndex + 1
+        );
+    };
+
+    return (
+        <View style={styles.container}>
+            <Image
+                source={images[currentIndex]}
+                style={styles.image}
+                resizeMode="contain"
+            />
+            <Text style={styles.imageNumber}>
+                Image {currentIndex + 1} of {images.length}
+            </Text>
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={handlePrevious}
+                >
+                    <Text style={styles.buttonText}>Previous</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={handleNext}
+                >
+                    <Text style={styles.buttonText}>Next</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
+};
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 20,
+        backgroundColor: '#f5f5f5',
+    },
+    image: {
+        width: Dimensions.get('window').width - 40,
+        height: 300,
+        marginBottom: 20,
+        borderRadius: 10,
+    },
+    imageNumber: {
+        fontSize: 18,
+        marginBottom: 20,
+        color: '#333',
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+        paddingHorizontal: 20,
+    },
+    button: {
+        backgroundColor: '#007AFF',
+        paddingVertical: 12,
+        paddingHorizontal: 30,
+        borderRadius: 8,
+        minWidth: 120,
+        alignItems: 'center',
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: '600',
+    },
+});
+
+export default ImageViewer;
