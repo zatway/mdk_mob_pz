@@ -14,7 +14,6 @@ const App_1 = () => {
                 <Stack.Screen
                     name="Main"
                     component={MainScreen}
-                    options={{title: 'Lifecycle Demo'}}
                 />
                 <Stack.Screen
                     name="Normal"
