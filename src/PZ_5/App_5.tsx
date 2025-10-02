@@ -9,7 +9,10 @@ import {
   ToastAndroid,
   Alert,
   Platform,
+  Dimensions,
 } from 'react-native';
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 type TimeOfDay = 'morning' | 'day' | 'evening' | 'night';
 
@@ -45,17 +48,24 @@ const App_5: React.FC = () => {
     }
   };
 
-  const backgrounds: Record<TimeOfDay, {uri: string}> = {
-    morning: {uri: './assets/morning.jpg'},
-    day: {
-      uri: './assets/day.jpg',
-    },
-    evening: {
-      uri: './assets/evening.jpg',
-    },
-    night: {
-      uri: './assets/night.jpg',
-    },
+  const morningImage = require('./assets/morning.png');
+  const dayImage = require('./assets/day.png');
+  const eveningImage = require('./assets/evening.png');
+  const nightImage = require('./assets/night.png');
+
+  const backgrounds: Record<TimeOfDay, any> = {
+    morning: morningImage,
+    day: dayImage,
+    evening: eveningImage,
+    night: nightImage,
+  };
+
+  const showToast = (message: string) => {
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(message, ToastAndroid.LONG);
+    } else {
+      Alert.alert('Инфо', message);
+    }
   };
 
   return (
@@ -78,20 +88,53 @@ const App_5: React.FC = () => {
         {currentTime === 'morning' && (
           <>
             <TouchableOpacity
-              style={[styles.interactiveButton, { top: '30%', left: '40%', width: 100, height: 100 }]}
-              onPress={() => ToastAndroid.show('Милый котик! Он любит завтракать.', ToastAndroid.LONG)}
+              style={[
+                styles.interactiveButton,
+                {
+                  top: screenHeight * 0.3,
+                  left: screenWidth * 0.4,
+                  width: 100,
+                  height: 100,
+                },
+              ]}
+              onPress={() => showToast('Милый котик! Он любит завтракать.')}
             />
             <TouchableOpacity
-              style={[styles.interactiveButton, { top: '60%', left: '30%', width: 80, height: 80 }]}
-              onPress={() => ToastAndroid.show('Миска для еды. Наполни её вкусняшками!', ToastAndroid.LONG)}
+              style={[
+                styles.interactiveButton,
+                {
+                  top: screenHeight * 0.6,
+                  left: screenWidth * 0.3,
+                  width: 80,
+                  height: 80,
+                },
+              ]}
+              onPress={() => showToast('Миска для еды. Наполни её вкусняшками!')}
             />
             <TouchableOpacity
-              style={[styles.interactiveButton, { top: '50%', left: '60%', width: 60, height: 60 }]}
-              onPress={() => ToastAndroid.show('Еда для котика. Свежий корм!', ToastAndroid.LONG)}
+              style={[
+                styles.interactiveButton,
+                {
+                  top: screenHeight * 0.5,
+                  left: screenWidth * 0.6,
+                  width: 60,
+                  height: 60,
+                },
+              ]}
+              onPress={() => showToast('Еда для котика. Свежий корм!')}
             />
+            {/* Кнопка для игрушки */}
             <TouchableOpacity
-              style={[styles.interactiveButton, { top: '70%', left: '50%', width: 70, height: 70 }]}
-              onPress={() => ToastAndroid.show('Игрушка котика. После еды поиграй!', ToastAndroid.LONG)}
+              style={[
+                styles.interactiveButton,
+                {
+                  top: screenHeight * 0.7,
+                  left: screenWidth * 0.5,
+                  width: 70,
+                  height: 70,
+                },
+              ]}
+              onPress={() => showToast('Игрушка котика. После еды поиграй!')}
             />
           </>
         )}
@@ -127,7 +170,7 @@ const styles = StyleSheet.create({
   interactiveButton: {
     position: 'absolute',
     backgroundColor: 'transparent',
-    opacity: 0,
+    opacity: 0.5,
   },
 });
 
