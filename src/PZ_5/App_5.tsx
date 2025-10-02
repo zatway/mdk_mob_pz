@@ -1,9 +1,11 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
 
 const App_5 = () => {
   return <SafeAreaView style={styles.container}>
+    <View>
 
+    </View>
   </SafeAreaView>;
 };
 
