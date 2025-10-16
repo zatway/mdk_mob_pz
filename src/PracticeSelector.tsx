@@ -21,10 +21,10 @@ const PracticeWrapper = ({
   onBack: () => void;
 }) => (
   <View style={{flex: 1}}>
+    <View style={{flex: 1, paddingVertical: 25 }}>{children}</View>
     <TouchableOpacity style={styles.backButton} onPress={onBack}>
       <Text style={styles.backButtonText}>Назад к выбору</Text>
     </TouchableOpacity>
-    <View style={{flex: 1}}>{children}</View>
   </View>
 );
 

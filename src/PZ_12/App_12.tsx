@@ -1,5 +1,6 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {SafeAreaView, View, Text, StyleSheet, TouchableOpacity, Switch} from 'react-native';
+import ControlButton from './ControlButton.tsx';
 
 type SourceKey = 'RAW' | 'HTTP' | 'STREAM' | 'SD' | 'URI';
 
@@ -18,7 +19,7 @@ const App_12: React.FC = () => {
   const [loop, setLoop] = useState(false);
   const [playerState, setPlayerState] = useState<PlayerState>('idle');
   const [positionMs, setPositionMs] = useState(0);
-  const durationMs = 180_000; // simulate 3 min track
+  const durationMs = 180_000;
   const timerRef = useRef<NodeJS.Timer | null>(null);
 
   const sourceValue = useMemo(() => SOURCES.find(s => s.key === source)?.value ?? '', [source]);
@@ -32,7 +33,6 @@ const App_12: React.FC = () => {
         setPositionMs(prev => {
           const next = prev + 500;
           if (next >= durationMs) {
-            // onCompletion
             if (loop) {
               return 0;
             }
@@ -55,7 +55,6 @@ const App_12: React.FC = () => {
   }, [isPlaying, loop]);
 
   const prepareAndStart = () => {
-    // Simulate async prepare for network sources
     const needsAsync = source === 'HTTP' || source === 'STREAM';
     setPlayerState('preparing');
     const startPlayback = () => {
@@ -94,7 +93,6 @@ const App_12: React.FC = () => {
       <Text style={styles.title}>Аудиоплеер (демо)</Text>
       <Text style={styles.subtitle}>Источник: {sourceValue}</Text>
 
-      {/* Top row: source buttons */}
       <View style={styles.rowWrap}>
         {SOURCES.map(s => (
           <TouchableOpacity key={s.key} style={[styles.chip, s.key === source && styles.chipActive]} onPress={() => setSource(s.key)}>
@@ -103,10 +101,8 @@ const App_12: React.FC = () => {
         ))}
       </View>
 
-      {/* Middle controls */}
       <View style={styles.controlsRow}>
         <ControlButton label="Пауза" onPress={pause} disabled={!isPlaying} />
-        <ControlButton label="Старт" onPress={resume} disabled={playerState !== 'paused'} />
         <ControlButton label="Стоп" onPress={stop} disabled={playerState === 'idle' || playerState === 'stopped'} />
         <View style={styles.loopBox}>
           <Text style={styles.loopLabel}>Повтор</Text>
@@ -114,26 +110,21 @@ const App_12: React.FC = () => {
         </View>
       </View>
 
-      {/* Start row (prepare & play) to mimic setDataSource + prepare(+Async) + start */}
       <View style={styles.controlsRow}>
         <ControlButton label={playerState === 'preparing' ? 'Подготовка…' : 'Воспроизвести'} onPress={prepareAndStart} disabled={playerState === 'preparing'} />
       </View>
 
-      {/* Bottom row: seek/log */}
       <View style={styles.controlsRow}>
         <ControlButton label="<< 5с" onPress={() => seekBy(-5000)} />
         <ControlButton label=">> 5с" onPress={() => seekBy(5000)} />
         <ControlButton
           label="Лог"
           onPress={() => {
-            // In a real app, use console.log or a logger
-            // Here we just change title subtly by toggling state
             setPositionMs(p => p);
           }}
         />
       </View>
 
-      {/* Progress */}
       <View style={styles.progressBox}>
         <View style={styles.progressBarBg}>
           <View style={[styles.progressBarFg, {width: `${Math.max(0, Math.min(100, progress * 100))}%`}]} />
@@ -146,11 +137,6 @@ const App_12: React.FC = () => {
   );
 };
 
-const ControlButton: React.FC<{label: string; onPress: () => void; disabled?: boolean}> = ({label, onPress, disabled}) => (
-  <TouchableOpacity style={[styles.btn, disabled && styles.btnDisabled]} onPress={onPress} disabled={!!disabled}>
-    <Text style={styles.btnText}>{label}</Text>
-  </TouchableOpacity>
-);
 
 const styles = StyleSheet.create({
   container: {
@@ -195,20 +181,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 12,
     alignItems: 'center',
-  },
-  btn: {
-    backgroundColor: '#1E88E5',
-    paddingVertical: 12,
-    paddingHorizontal: 14,
-    borderRadius: 10,
-    marginRight: 8,
-  },
-  btnDisabled: {
-    backgroundColor: '#90CAF9',
-  },
-  btnText: {
-    color: '#ffffff',
-    fontWeight: '700',
   },
   loopBox: {
     flexDirection: 'row',

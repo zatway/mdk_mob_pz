@@ -23,19 +23,18 @@ const App_7: React.FC = () => {
   const imageSource = useMemo(() => {
     switch (active) {
       case 'home':
-        return require('../PZ_4/assets/1.jpg');
+        return require('../PZ_5/assets/day.png');
       case 'search':
-        return require('../PZ_4/assets/2.jpg');
+        return require('../PZ_5/assets/evening.png');
       case 'favorites':
-        return require('../PZ_4/assets/3.jpg');
+        return require('../PZ_5/assets/morning.png');
       case 'settings':
-        return require('../PZ_4/assets/4.jpg');
+        return require('../PZ_5/assets/night.png');
     }
   }, [active]);
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Content with 3 centered images idea: show one at a time */}
       <View style={styles.content}>
         <Image source={imageSource} style={styles.image} resizeMode="contain" />
       </View>

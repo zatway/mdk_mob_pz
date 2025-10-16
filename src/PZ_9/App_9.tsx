@@ -17,7 +17,7 @@ const App_9: React.FC = () => {
   const renderItem = ({item}: {item: User}) => {
     return (
       <View style={styles.itemRow}>
-        <Image source={require('../PZ_4/assets/5.jpg')} style={styles.avatar} />
+        <Image source={require('../PZ_2/image/avatar.png')} style={styles.avatar} />
         <View style={styles.itemTextBox}>
           <Text style={styles.itemName}>{item.name}</Text>
           <Text style={styles.itemMeta}>{item.role} • {item.city}</Text>
@@ -31,7 +31,6 @@ const App_9: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>ListView / FlatList (string-array ресурсы)</Text>
       <TextInput
         style={styles.search}
         value={query}
