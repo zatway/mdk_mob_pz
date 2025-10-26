@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {View, TouchableOpacity, Text, StyleSheet, ScrollView} from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  ScrollView,
+} from 'react-native';
 import App_1 from './PZ_1/App_1';
 import App_2 from './PZ_2/App_2';
 import App_3 from './PZ_3/App_3.tsx';
@@ -12,6 +18,11 @@ import App_9 from './PZ_9/App_9';
 import App_10 from './PZ_10/App_10';
 import App_12 from './PZ_12/App_12';
 import App_11 from './PZ_11/App_11';
+import App_13 from './PZ_13/App_13';
+import App_14 from './PZ_14/App_14.tsx';
+import App_15 from './PZ_15/App_15.tsx';
+import App_16 from './PZ_16/App_16.tsx';
+import App_17 from './PZ_17/App_17.tsx';
 
 const PracticeWrapper = ({
   children,
@@ -21,7 +32,7 @@ const PracticeWrapper = ({
   onBack: () => void;
 }) => (
   <View style={{flex: 1}}>
-    <View style={{flex: 1, paddingVertical: 25 }}>{children}</View>
+    <View style={{flex: 1, paddingVertical: 25}}>{children}</View>
     <TouchableOpacity style={styles.backButton} onPress={onBack}>
       <Text style={styles.backButtonText}>Назад к выбору</Text>
     </TouchableOpacity>
@@ -103,9 +114,47 @@ const PracticeSelector = () => {
         <App_12 />
       </PracticeWrapper>
     );
+  if (selected === 13)
+    return (
+      <PracticeWrapper onBack={() => setSelected(null)}>
+        <App_13 />
+      </PracticeWrapper>
+    );
+  if (selected === 14)
+    return (
+      <PracticeWrapper onBack={() => setSelected(null)}>
+        <App_14 />
+      </PracticeWrapper>
+    );
+  if (selected === 14)
+    return (
+      <PracticeWrapper onBack={() => setSelected(null)}>
+        <App_15 />
+      </PracticeWrapper>
+    );
+  if (selected === 15)
+    return (
+      <PracticeWrapper onBack={() => setSelected(null)}>
+        <App_15 />
+      </PracticeWrapper>
+    );
+  if (selected === 16)
+    return (
+      <PracticeWrapper onBack={() => setSelected(null)}>
+        <App_16 />
+      </PracticeWrapper>
+    );
+  if (selected === 17)
+    return (
+      <PracticeWrapper onBack={() => setSelected(null)}>
+        <App_17 />
+      </PracticeWrapper>
+    );
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={true}>
+    <ScrollView
+      contentContainerStyle={styles.scrollContent}
+      showsVerticalScrollIndicator={true}>
       <TouchableOpacity style={styles.button} onPress={() => setSelected(1)}>
         <Text style={styles.buttonText}>1 практика</Text>
       </TouchableOpacity>
@@ -141,6 +190,21 @@ const PracticeSelector = () => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={() => setSelected(12)}>
         <Text style={styles.buttonText}>12 практика</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => setSelected(13)}>
+        <Text style={styles.buttonText}>13 практика</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => setSelected(14)}>
+        <Text style={styles.buttonText}>14 практика</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => setSelected(15)}>
+        <Text style={styles.buttonText}>15 практика</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => setSelected(16)}>
+        <Text style={styles.buttonText}>16 практика</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => setSelected(17)}>
+        <Text style={styles.buttonText}>17 практика</Text>
       </TouchableOpacity>
     </ScrollView>
   );
