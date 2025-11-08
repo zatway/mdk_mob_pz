@@ -78,6 +78,12 @@ android {
     compileSdk rootProject.ext.compileSdkVersion
 
     namespace "com.mdk_mob_pz"
+    
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    
     defaultConfig {
         applicationId "com.mdk_mob_pz"
         minSdkVersion rootProject.ext.minSdkVersion

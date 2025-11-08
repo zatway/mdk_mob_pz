@@ -296,3 +296,4 @@ const styles = StyleSheet.create({
 
 export default App_8;
 
+
