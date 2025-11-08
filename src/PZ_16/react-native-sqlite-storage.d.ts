@@ -14,7 +14,7 @@ declare module 'react-native-sqlite-storage' {
       options: {name: string; location?: string},
       success?: (db: SQLiteDatabase) => void,
       error?: (error: any) => void,
-    ) => SQLiteDatabase;
+    ) => SQLiteDatabase
   };
 }
 

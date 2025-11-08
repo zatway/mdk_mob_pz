@@ -14,7 +14,7 @@ import {ConnectFetch} from './ConnectFetch';
 import {StaticWeatherAnalyze} from './StaticWeatherAnalyze';
 
 // API ключ OpenWeatherMap (замените на свой!)
-const API_KEY = 'YOUR_API_KEY_HERE'; // Получите на https://home.openweathermap.org/api_keys
+const API_KEY = '6024451a53cc956ea99b639a491a7b5c'; // Получите на https://home.openweathermap.org/api_keys
 
 const App_18: React.FC = () => {
   const [city, setCity] = useState('Orenburg');
@@ -27,7 +27,7 @@ const App_18: React.FC = () => {
   }, []);
 
   const updateWeatherData = async (cityName: string) => {
-    if (!API_KEY || API_KEY === 'YOUR_API_KEY_HERE') {
+    if (API_KEY === undefined) {
       Alert.alert(
         'Ошибка',
         'Необходимо указать API ключ OpenWeatherMap!\nПолучите его на https://home.openweathermap.org/api_keys',
@@ -37,8 +37,43 @@ const App_18: React.FC = () => {
 
     setLoading(true);
     try {
-      const json = await ConnectFetch.getJSON(cityName, API_KEY);
-      
+      const transliterate = (text: string) =>
+        text
+          .replace(/а/g, 'a')
+          .replace(/б/g, 'b')
+          .replace(/в/g, 'v')
+          .replace(/г/g, 'g')
+          .replace(/д/g, 'd')
+          .replace(/е/g, 'e')
+          .replace(/ё/g, 'yo')
+          .replace(/ж/g, 'zh')
+          .replace(/з/g, 'z')
+          .replace(/и/g, 'i')
+          .replace(/й/g, 'y')
+          .replace(/к/g, 'k')
+          .replace(/л/g, 'l')
+          .replace(/м/g, 'm')
+          .replace(/н/g, 'n')
+          .replace(/о/g, 'o')
+          .replace(/п/g, 'p')
+          .replace(/р/g, 'r')
+          .replace(/с/g, 's')
+          .replace(/т/g, 't')
+          .replace(/у/g, 'u')
+          .replace(/ф/g, 'f')
+          .replace(/х/g, 'kh')
+          .replace(/ц/g, 'ts')
+          .replace(/ч/g, 'ch')
+          .replace(/ш/g, 'sh')
+          .replace(/щ/g, 'sch')
+          .replace(/ы/g, 'y')
+          .replace(/э/g, 'e')
+          .replace(/ю/g, 'yu')
+          .replace(/я/g, 'ya');
+
+      const cityForQuery = transliterate(city.trim());
+      const json = await ConnectFetch.getJSON(cityForQuery, API_KEY);
+
       if (!json) {
         Alert.alert('Ошибка', `${cityName} - информация не найдена`);
         setWeatherData(null);

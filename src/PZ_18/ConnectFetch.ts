@@ -1,26 +1,28 @@
-// ConnectFetch - класс для получения данных о погоде через API OpenWeatherMap
+import {Alert} from 'react-native';
+
 export class ConnectFetch {
   private static readonly OPEN_WEATHER_MAP_API =
-    'https://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s&units=metric';
-  private static readonly OPEN_WEATHER_ICON = 'https://openweathermap.org/img/wn/%s@2x.png';
+    'https://api.openweathermap.org/data/2.5/weather';
+  private static readonly OPEN_WEATHER_ICON =
+    'https://openweathermap.org/img/wn/%s@2x.png';
 
-  // Получение JSON данных о погоде
   static async getJSON(city: string, apiKey: string): Promise<any | null> {
     try {
-      // Заменяем первый %s на город, второй %s на API ключ
-      const urlString = this.OPEN_WEATHER_MAP_API
-        .replace('%s', encodeURIComponent(city))
-        .replace('%s', apiKey);
-      const response = await fetch(urlString);
+      const urlString = `${this.OPEN_WEATHER_MAP_API}?q=${encodeURIComponent(
+        city,
+      )}&appid=${apiKey}&units=metric&lang=ru`;
 
+      Alert.alert(urlString)
+
+      const response = await fetch(urlString);
       if (!response.ok) {
+        console.warn('Ошибка запроса:', response.status);
         return null;
       }
 
       const data = await response.json();
-
-      // Проверяем код ответа (200 = успех)
       if (data.cod !== 200) {
+        console.warn('Ошибка в ответе API:', data);
         return null;
       }
 
@@ -31,17 +33,13 @@ export class ConnectFetch {
     }
   }
 
-  // Получение URL иконки погоды
   static getIconUrl(json: any): string {
     try {
-      if (json.weather && json.weather[0] && json.weather[0].icon) {
-        const icon = json.weather[0].icon;
-        return this.OPEN_WEATHER_ICON.replace('%s', icon);
-      }
+      const icon = json?.weather?.[0]?.icon;
+      return icon ? this.OPEN_WEATHER_ICON.replace('%s', icon) : '';
     } catch (error) {
       console.error('getIconUrl error:', error);
+      return '';
     }
-    return '';
   }
 }
-
