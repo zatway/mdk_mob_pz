@@ -9,8 +9,10 @@ import {
   ToastAndroid,
   Alert,
   Platform,
-  Dimensions,
+  Dimensions, ViewStyle, ImageStyle,
 } from 'react-native';
+import {commonStyles} from '../styles/commonStyles.ts';
+import {colors} from '../styles/colors.ts';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -145,31 +147,29 @@ const App_5: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    ...commonStyles.container,
   },
   buttonContainer: {
-    flexDirection: 'row',
+    ...commonStyles.row,
     justifyContent: 'space-around',
     padding: 10,
-    backgroundColor: '#ffffff',
-  },
+    backgroundColor: colors.white,
+  } as ViewStyle,
   button: {
     padding: 10,
-    backgroundColor: '#6200EE',
+    backgroundColor: colors.primaryPurple,
     borderRadius: 5,
   },
   buttonText: {
-    color: '#ffffff',
+    color: colors.white,
     fontWeight: 'bold',
   },
   background: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+    ...commonStyles.containerCentered,
+  } as ImageStyle,
   interactiveButton: {
     position: 'absolute',
-    backgroundColor: 'transparent',
+    backgroundColor: colors.transparent,
     opacity: 0.5,
   },
 });

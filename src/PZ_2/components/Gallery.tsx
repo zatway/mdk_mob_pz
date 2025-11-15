@@ -23,14 +23,16 @@ const Gallery = () => {
         </View>
     );
 };
+
 const styles = StyleSheet.create({
-    container: {
-        margin: 8,
-    },
-    image: {
-        width: 112,
-        height: 112,
-        margin: 2,
-    },
+  container: {
+    margin: 8,
+  },
+  image: {
+    width: 112,
+    height: 112,
+    margin: 2,
+  },
 });
+
 export default Gallery;

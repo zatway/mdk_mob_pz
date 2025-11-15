@@ -1,6 +1,8 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {SafeAreaView, View, Text, StyleSheet, TouchableOpacity, Switch} from 'react-native';
+import {SafeAreaView, View, Text, StyleSheet, TouchableOpacity, Switch, ViewStyle} from 'react-native';
 import ControlButton from './ControlButton.tsx';
+import {commonStyles} from '../styles/commonStyles.ts';
+import {colors} from '../styles/colors.ts';
 
 type SourceKey = 'RAW' | 'HTTP' | 'STREAM' | 'SD' | 'URI';
 
@@ -137,21 +139,21 @@ const App_12: React.FC = () => {
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
+    ...commonStyles.container,
+    backgroundColor: colors.white,
     padding: 16,
   },
   title: {
+    ...commonStyles.title,
     fontSize: 20,
     fontWeight: '800',
-    color: '#212121',
+    color: colors.textPrimary,
   },
   subtitle: {
+    ...commonStyles.subtitle,
     marginTop: 6,
-    color: '#616161',
   },
   rowWrap: {
     flexDirection: 'row',
@@ -162,34 +164,32 @@ const styles = StyleSheet.create({
   chip: {
     paddingVertical: 8,
     paddingHorizontal: 12,
-    backgroundColor: '#EEEEEE',
+    backgroundColor: colors.greyLight,
     borderRadius: 20,
     marginRight: 8,
     marginBottom: 8,
   },
   chipActive: {
-    backgroundColor: '#BBDEFB',
+    backgroundColor: colors.primaryLighter,
   },
   chipText: {
-    color: '#424242',
+    color: colors.textSecondary,
     fontWeight: '700',
   },
   chipTextActive: {
-    color: '#0D47A1',
+    color: colors.primaryDark,
   },
   controlsRow: {
-    flexDirection: 'row',
+    ...commonStyles.row,
     marginTop: 12,
-    alignItems: 'center',
-  },
+  } as ViewStyle,
   loopBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    ...commonStyles.row,
     marginLeft: 'auto',
-  },
+  } as ViewStyle,
   loopLabel: {
     marginRight: 8,
-    color: '#424242',
+    color: colors.textSecondary,
     fontWeight: '700',
   },
   progressBox: {
@@ -197,17 +197,17 @@ const styles = StyleSheet.create({
   },
   progressBarBg: {
     height: 8,
-    backgroundColor: '#EEEEEE',
+    backgroundColor: colors.greyLight,
     borderRadius: 8,
     overflow: 'hidden',
   },
   progressBarFg: {
     height: '100%',
-    backgroundColor: '#1E88E5',
+    backgroundColor: colors.info,
   },
   progressText: {
     marginTop: 6,
-    color: '#424242',
+    color: colors.textSecondary,
   },
 });
 

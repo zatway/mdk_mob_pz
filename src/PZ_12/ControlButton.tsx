@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {colors} from '../styles/colors.ts';
 
 const ControlButton: React.FC<{label: string; onPress: () => void; disabled?: boolean}> = ({label, onPress, disabled}) => (
   <TouchableOpacity style={[styles.btn, disabled && styles.btnDisabled]} onPress={onPress} disabled={disabled}>
@@ -11,17 +12,17 @@ export default ControlButton;
 
 const styles = StyleSheet.create({
   btn: {
-    backgroundColor: '#1E88E5',
+    backgroundColor: colors.info,
     paddingVertical: 12,
     paddingHorizontal: 14,
     borderRadius: 10,
     marginRight: 8,
   },
   btnDisabled: {
-    backgroundColor: '#90CAF9',
+    backgroundColor: colors.infoLight,
   },
   btnText: {
-    color: '#ffffff',
+    color: colors.white,
     fontWeight: '700',
   },
 })

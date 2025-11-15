@@ -8,10 +8,12 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
-  Alert,
+  Alert, ViewStyle,
 } from 'react-native';
 import {ConnectFetch} from './ConnectFetch';
 import {StaticWeatherAnalyze} from './StaticWeatherAnalyze';
+import { commonStyles } from '../styles/commonStyles';
+import {colors} from '../styles/colors.ts';
 
 // API ключ OpenWeatherMap (замените на свой!)
 const API_KEY = '6024451a53cc956ea99b639a491a7b5c';
@@ -172,64 +174,62 @@ const App_18: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
+    ...commonStyles.container,
+    backgroundColor: colors.white,
   },
   searchContainer: {
-    flexDirection: 'row',
+    ...commonStyles.row,
     padding: 16,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: colors.backgroundGrey,
     borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
-  },
+    borderBottomColor: colors.divider,
+  } as ViewStyle,
   searchInput: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.white,
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
     marginRight: 8,
     fontSize: 16,
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: colors.divider,
   },
   searchButton: {
-    backgroundColor: '#6200EE',
+    backgroundColor: colors.primaryPurple,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 8,
     justifyContent: 'center',
   },
   searchButtonText: {
-    color: '#ffffff',
+    color: colors.white,
     fontSize: 16,
     fontWeight: '700',
   },
   loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+    ...commonStyles.containerCentered,
+  } as ViewStyle,
   loadingText: {
     marginTop: 12,
     fontSize: 16,
-    color: '#616161',
+    color: colors.textTertiary,
   },
   weatherContainer: {
-    flex: 1,
+    ...commonStyles.container,
     padding: 16,
   },
   cityField: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#212121',
+    color: colors.textPrimary,
     textAlign: 'center',
     marginTop: 20,
     marginBottom: 8,
   },
   updatedField: {
     fontSize: 13,
-    color: '#616161',
+    color: colors.textTertiary,
     textAlign: 'center',
     marginBottom: 20,
   },
@@ -243,16 +243,15 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     alignSelf: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
+    ...commonStyles.containerCentered,
     marginVertical: 20,
-  },
+  } as ViewStyle,
   weatherIconPlaceholderText: {
     fontSize: 120,
   },
   detailsField: {
     fontSize: 16,
-    color: '#424242',
+    color: colors.textSecondary,
     textAlign: 'center',
     marginBottom: 20,
     lineHeight: 24,
@@ -260,20 +259,18 @@ const styles = StyleSheet.create({
   temperatureField: {
     fontSize: 40,
     fontWeight: '700',
-    color: '#212121',
+    color: colors.textPrimary,
     textAlign: 'center',
     marginTop: 'auto',
     marginBottom: 40,
   },
   emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    ...commonStyles.containerCentered,
     padding: 20,
-  },
+  } as ViewStyle,
   emptyText: {
     fontSize: 16,
-    color: '#9E9E9E',
+    color: colors.greyMedium,
     textAlign: 'center',
   },
 });

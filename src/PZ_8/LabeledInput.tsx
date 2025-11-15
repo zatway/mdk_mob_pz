@@ -1,5 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {commonStyles} from '../styles/commonStyles.ts';
+import {colors} from '../styles/colors.ts';
 
 const LabeledInput: React.FC<{
   label: string;
@@ -30,15 +32,10 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     marginBottom: 6,
-    color: '#616161',
+    color: colors.textTertiary,
     fontWeight: '600',
   },
   input: {
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    backgroundColor: '#FAFAFA',
+    ...commonStyles.input,
   },
 });

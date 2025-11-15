@@ -7,10 +7,12 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  Alert,
+  Alert, ViewStyle,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {User} from './User.ts';
+import {commonStyles} from '../styles/commonStyles.ts';
+import {colors} from '../styles/colors.ts';
 
 const STORAGE_KEY = 'user_data';
 
@@ -148,19 +150,20 @@ const App_14: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
+    ...commonStyles.container,
+    backgroundColor: colors.white,
     padding: 16,
   },
   title: {
+    ...commonStyles.title,
     fontSize: 20,
     fontWeight: '800',
-    color: '#212121',
+    color: colors.textPrimary,
     marginBottom: 6,
   },
   subtitle: {
+    ...commonStyles.subtitle,
     fontSize: 14,
-    color: '#616161',
     marginBottom: 20,
   },
   form: {
@@ -169,24 +172,19 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#424242',
+    color: colors.textSecondary,
     marginBottom: 8,
     marginTop: 12,
   },
   input: {
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-    borderRadius: 8,
-    paddingHorizontal: 12,
+    ...commonStyles.input,
     paddingVertical: 12,
-    backgroundColor: '#FAFAFA',
-    fontSize: 16,
   },
   buttonsRow: {
-    flexDirection: 'row',
+    ...commonStyles.row,
     marginBottom: 16,
     gap: 8,
-  },
+  } as ViewStyle,
   button: {
     flex: 1,
     paddingVertical: 14,
@@ -196,36 +194,36 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   saveButton: {
-    backgroundColor: '#6200EE',
+    backgroundColor: colors.primaryPurple,
   },
   getButton: {
-    backgroundColor: '#6200EE',
+    backgroundColor: colors.primaryPurple,
   },
   clearButton: {
-    backgroundColor: '#E53935',
+    backgroundColor: colors.danger,
     marginTop: 12,
   },
   buttonText: {
-    color: '#ffffff',
+    color: colors.white,
     fontSize: 16,
     fontWeight: '700',
   },
   dataDisplay: {
-    backgroundColor: '#F5F5F5',
+    backgroundColor: colors.backgroundGrey,
     padding: 16,
     borderRadius: 10,
     marginBottom: 16,
   },
   dataText: {
     fontSize: 16,
-    color: '#424242',
+    color: colors.textSecondary,
     fontWeight: '600',
   },
   imageContainer: {
     alignItems: 'center',
     marginBottom: 16,
     padding: 16,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: colors.backgroundListItem,
     borderRadius: 12,
   },
   image: {
@@ -236,7 +234,7 @@ const styles = StyleSheet.create({
   },
   imageLabel: {
     fontSize: 14,
-    color: '#616161',
+    color: colors.textTertiary,
     fontWeight: '600',
   },
 });

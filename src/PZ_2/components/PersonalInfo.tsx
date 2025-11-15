@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import {colors} from '../../styles/colors.ts';
 
 const PersonalInfo = () => {
     return (
@@ -12,17 +13,19 @@ const PersonalInfo = () => {
         </View>
     );
 };
+
 const styles = StyleSheet.create({
-    container: {
-        margin: 8,
-        padding: 8,
-        backgroundColor: '#f4f4f4',
-        borderRadius: 8,
-    },
-    text: {
-        fontSize: 18,
-        marginVertical: 4,
-        color: '#333',
-    },
+  container: {
+    margin: 8,
+    padding: 8,
+    backgroundColor: colors.lightGrey,
+    borderRadius: 8,
+  },
+  text: {
+    fontSize: 18,
+    marginVertical: 4,
+    color: colors.textDark,
+  },
 });
+
 export default PersonalInfo;

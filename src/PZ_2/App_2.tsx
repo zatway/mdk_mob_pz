@@ -5,6 +5,8 @@ import PersonalInfo from './components/PersonalInfo.tsx';
 import Menu from './components/Menu.tsx';
 import Gallery from './components/Gallery.tsx';
 import Projects from './components/Projects.tsx';
+import {commonStyles} from '../styles/commonStyles.ts';
+import {colors} from '../styles/colors.ts';
 
 const App_2 = () => {
     const [selectTab, setSelectTab] = React.useState<number>(1);
@@ -32,10 +34,12 @@ const App_2 = () => {
         </SafeAreaView>
     );
 };
+
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-    },
+  container: {
+    ...commonStyles.container,
+    backgroundColor: colors.white,
+  },
 });
+
 export default App_2;

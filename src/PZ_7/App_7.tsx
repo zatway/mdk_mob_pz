@@ -5,8 +5,10 @@ import {
   StyleSheet,
   Image,
   Text,
-  TouchableOpacity,
+  TouchableOpacity, ViewStyle,
 } from 'react-native';
+import {commonStyles} from '../styles/commonStyles.ts';
+import {colors} from '../styles/colors.ts';
 
 type TabKey = 'home' | 'search' | 'favorites' | 'settings';
 
@@ -50,10 +52,10 @@ const App_7: React.FC = () => {
               accessibilityState={{selected: isActive}}
               style={styles.navItem}
               onPress={() => setActive(tab.key)}>
-              <Text style={[styles.navEmoji, {color: isActive ? ACTIVE_COLOR : INACTIVE_COLOR}]}>
+              <Text style={[styles.navEmoji, {color: isActive ? colors.primaryPurple : colors.greyMedium}]}>
                 {tab.emoji}
               </Text>
-              <Text style={[styles.navLabel, {color: isActive ? ACTIVE_COLOR : INACTIVE_COLOR}]}>
+              <Text style={[styles.navLabel, {color: isActive ?  colors.primaryPurple :  colors.greyMedium}]}>
                 {tab.label}
               </Text>
             </TouchableOpacity>
@@ -64,32 +66,27 @@ const App_7: React.FC = () => {
   );
 };
 
-const ACTIVE_COLOR = '#6200EE';
-const INACTIVE_COLOR = '#9E9E9E';
-
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
+    ...commonStyles.container,
+    backgroundColor: colors.white,
   },
   content: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    ...commonStyles.containerCentered,
+  } as ViewStyle,
   image: {
     width: '90%',
     height: '80%',
     borderRadius: 12,
   },
   bottomNav: {
-    flexDirection: 'row',
+    ...commonStyles.row,
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: '#E0E0E0',
+    borderTopColor: colors.divider,
     paddingVertical: 8,
     paddingHorizontal: 12,
-    backgroundColor: '#FAFAFA',
-  },
+    backgroundColor: colors.backgroundLight,
+  } as ViewStyle,
   navItem: {
     flex: 1,
     alignItems: 'center',

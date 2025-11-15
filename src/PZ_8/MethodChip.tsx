@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {colors} from '../styles/colors.ts';
 
 const MethodChip: React.FC<{label: string; selected: boolean; onPress: () => void}> = ({label, selected, onPress}) => {
   return (
@@ -10,21 +11,22 @@ const MethodChip: React.FC<{label: string; selected: boolean; onPress: () => voi
 };
 
 export default MethodChip;
+
 const styles = StyleSheet.create({
   chip: {
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 20,
-    backgroundColor: '#EEEEEE',
+    backgroundColor: colors.greyLight,
   },
   chipSelected: {
-    backgroundColor: '#BBDEFB',
+    backgroundColor: colors.primaryLighter,
   },
   chipText: {
-    color: '#424242',
+    color: colors.textSecondary,
     fontWeight: '600',
   },
   chipTextSelected: {
-    color: '#0D47A1',
+    color: colors.primaryDark,
   },
 })

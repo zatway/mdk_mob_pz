@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, ViewStyle} from 'react-native';
+import {commonStyles} from '../../styles/commonStyles.ts';
 
 interface MenuProps {
     handleChangeTab: (tab: string) => void
@@ -20,17 +21,19 @@ const Menu: React.FC<MenuProps> = ({handleChangeTab}) => {
         </View>
     );
 };
+
 const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        margin: 8,
-        height: 30,
-    },
-    menuItem: {
-        flex: 1,
-        textAlign: 'center',
-        fontSize: 18,
-    },
+  container: {
+    ...commonStyles.row,
+    justifyContent: 'space-around',
+    margin: 8,
+    height: 30,
+  } as ViewStyle,
+  menuItem: {
+    flex: 1,
+    textAlign: 'center',
+    fontSize: 18,
+  },
 });
+
 export default Menu;

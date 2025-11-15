@@ -1,6 +1,8 @@
 import React from 'react';
 import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
 import ImageViewer from './ImageViewer.tsx';
+import {commonStyles} from '../styles/commonStyles.ts';
+import {colors} from '../styles/colors.ts';
 
 const App_4 = () => {
     return (
@@ -12,10 +14,10 @@ const App_4 = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#f5f5f5',
-    },
+  container: {
+    ...commonStyles.container,
+    backgroundColor: colors.backgroundGrey,
+  },
 });
 
 export default App_4;

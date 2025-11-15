@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, ViewStyle, TextStyle} from 'react-native';
 import { NavigationProps } from '../types/navigation.ts';
+import {commonStyles} from '../../styles/commonStyles.ts';
+import {colors} from '../../styles/colors.ts';
 
 interface Props {
   navigation: NavigationProps;
@@ -19,17 +21,15 @@ const NormalScreen: React.FC<Props> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
+    ...commonStyles.containerCentered,
+    backgroundColor: colors.white,
+  } as ViewStyle,
   text: {
     fontSize: 16,
     marginBottom: 24,
   },
   button: {
-    backgroundColor: '#2196F3',
+    backgroundColor: colors.primary,
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 4,
@@ -37,10 +37,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
+    ...commonStyles.buttonText,
+  } as TextStyle,
 });
 
 export default NormalScreen;

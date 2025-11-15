@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
+import {colors} from '../../styles/colors.ts';
 
 interface Project {
     id: string;
@@ -31,29 +32,31 @@ const Projects = () => {
         </View>
     );
 };
+
 const styles = StyleSheet.create({
-    container: {
-        margin: 8,
-    },
-    projectCard: {
-        backgroundColor: '#f4f4f4',
-        borderRadius: 8,
-        padding: 12,
-        marginVertical: 8,
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 3,
-    },
-    projectTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 6,
-    },
-    projectDescription: {
-        fontSize: 14,
-        color: '#555',
-    },
+  container: {
+    margin: 8,
+  },
+  projectCard: {
+    backgroundColor: colors.lightGrey,
+    borderRadius: 8,
+    padding: 12,
+    marginVertical: 8,
+    shadowColor: colors.black,
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  projectTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 6,
+  },
+  projectDescription: {
+    fontSize: 14,
+    color: colors.textMedium,
+  },
 });
+
 export default Projects;

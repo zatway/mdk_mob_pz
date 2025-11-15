@@ -7,8 +7,10 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
-  Alert,
+  Alert, ViewStyle,
 } from 'react-native';
+import { colors } from '../styles/colors';
+import {commonStyles} from '../styles/commonStyles.ts';
 
 type Contact = {
   id: string;
@@ -123,34 +125,29 @@ const App_10: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
+    ...commonStyles.container,
+    backgroundColor: colors.white,
     padding: 16,
   },
   title: {
-    fontSize: 18,
+    ...commonStyles.title,
+    color: colors.textPrimary,
     fontWeight: '700',
-    color: '#212121',
     marginBottom: 12,
   },
   controlsRow: {
-    flexDirection: 'row',
-  },
+    ...commonStyles.row,
+  } as ViewStyle,
   buttonsRow: {
-    flexDirection: 'row',
+    ...commonStyles.row,
     marginTop: 10,
-  },
+  } as ViewStyle,
   input: {
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    backgroundColor: '#FAFAFA',
+    ...commonStyles.input,
   },
   btn: {
     flex: 1,
-    backgroundColor: '#1E88E5',
+    backgroundColor: colors.info,
     paddingVertical: 12,
     borderRadius: 10,
     alignItems: 'center',
@@ -158,50 +155,48 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   btnDisabled: {
-    backgroundColor: '#90CAF9',
+    backgroundColor: colors.infoLight,
   },
   btnText: {
-    color: '#ffffff',
+    color: colors.white,
     fontWeight: '700',
   },
   itemRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F9F9F9',
+    ...commonStyles.row,
+    backgroundColor: colors.backgroundListItem,
     borderRadius: 12,
     padding: 12,
-  },
+  } as ViewStyle,
   itemRowSelected: {
-    backgroundColor: '#E3F2FD',
+    backgroundColor: colors.selectedBackground,
     borderWidth: 1,
-    borderColor: '#90CAF9',
+    borderColor: colors.infoLight,
   },
   itemAvatar: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#BBDEFB',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: colors.primaryLighter,
+    ...commonStyles.containerCentered,
     marginRight: 12,
-  },
+  } as ViewStyle,
   itemAvatarText: {
-    color: '#0D47A1',
+    color: colors.primaryDark,
     fontWeight: '700',
   },
   itemTextBox: {
     flex: 1,
   },
   itemName: {
-    color: '#212121',
+    color: colors.textPrimary,
     fontWeight: '700',
   },
   itemPhone: {
-    color: '#616161',
+    color: colors.textTertiary,
     marginTop: 2,
   },
   itemCheck: {
-    color: '#1E88E5',
+    color: colors.info,
     fontWeight: '700',
     fontSize: 18,
     marginLeft: 8,

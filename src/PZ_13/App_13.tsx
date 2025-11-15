@@ -1,97 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {SafeAreaView, View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
+import {SafeAreaView, View, Text, StyleSheet, TouchableOpacity, Alert, ViewStyle} from 'react-native';
+import {ServiceState} from './ServiceState.ts';
+import {MediaService} from './MediaService.ts';
+import {colors} from '../styles/colors.ts';
+import {commonStyles} from '../styles/commonStyles.ts';
 
-type ServiceState = 'stopped' | 'starting' | 'running' | 'stopping';
-
-// Simulated MediaService class
-class MediaService {
-  private static instance: MediaService | null = null;
-  private state: ServiceState = 'stopped';
-  private timer: NodeJS.Timer | null = null;
-  private onStateChange: ((state: ServiceState) => void) | null = null;
-
-  static getInstance(): MediaService {
-    if (!MediaService.instance) {
-      MediaService.instance = new MediaService();
-    }
-    return MediaService.instance;
-  }
-
-  setOnStateChange(callback: (state: ServiceState) => void) {
-    this.onStateChange = callback;
-  }
-
-  getState(): ServiceState {
-    return this.state;
-  }
-
-  // Simulate startService() -> onStartCommand()
-  startService() {
-    if (this.state !== 'stopped') return;
-    
-    this.state = 'starting';
-    this.onStateChange?.(this.state);
-    
-    // Simulate service initialization
-    setTimeout(() => {
-      this.state = 'running';
-      this.onStateChange?.(this.state);
-      this.startPlayback();
-    }, 1000);
-  }
-
-  // Simulate stopService() -> onDestroy()
-  stopService() {
-    if (this.state === 'stopped') return;
-    
-    this.state = 'stopping';
-    this.onStateChange?.(this.state);
-    
-    this.stopPlayback();
-    
-    setTimeout(() => {
-      this.state = 'stopped';
-      this.onStateChange?.(this.state);
-    }, 500);
-  }
-
-  private startPlayback() {
-    // Simulate audio playback with timer
-    this.timer = setInterval(() => {
-      // Service is running and "playing" audio
-    }, 1000);
-  }
-
-  private stopPlayback() {
-    if (this.timer) {
-      clearInterval(this.timer);
-      this.timer = null;
-    }
-  }
-
-  // Additional service functions
-  pauseService() {
-    if (this.state === 'running') {
-      this.stopPlayback();
-      this.state = 'stopped';
-      this.onStateChange?.(this.state);
-    }
-  }
-
-  resumeService() {
-    if (this.state === 'stopped') {
-      this.startService();
-    }
-  }
-
-  getServiceInfo() {
-    return {
-      state: this.state,
-      isRunning: this.state === 'running',
-      uptime: this.timer ? 'Active' : 'Inactive',
-    };
-  }
-}
 
 const App_13: React.FC = () => {
   const [serviceState, setServiceState] = useState<ServiceState>('stopped');
@@ -101,7 +14,7 @@ const App_13: React.FC = () => {
   useEffect(() => {
     serviceRef.current = MediaService.getInstance();
     serviceRef.current.setOnStateChange(setServiceState);
-    
+
     return () => {
       // Cleanup on unmount
       if (serviceRef.current) {
@@ -165,16 +78,16 @@ const App_13: React.FC = () => {
       </View>
 
       <View style={styles.controlsRow}>
-        <TouchableOpacity 
-          style={[styles.button, styles.startButton, serviceState !== 'stopped' && styles.buttonDisabled]} 
+        <TouchableOpacity
+          style={[styles.button, styles.startButton, serviceState !== 'stopped' && styles.buttonDisabled]}
           onPress={startService}
           disabled={serviceState !== 'stopped'}
         >
           <Text style={styles.buttonText}>Запустить сервис</Text>
         </TouchableOpacity>
-        
-        <TouchableOpacity 
-          style={[styles.button, styles.stopButton, serviceState === 'stopped' && styles.buttonDisabled]} 
+
+        <TouchableOpacity
+          style={[styles.button, styles.stopButton, serviceState === 'stopped' && styles.buttonDisabled]}
           onPress={stopService}
           disabled={serviceState === 'stopped'}
         >
@@ -183,16 +96,16 @@ const App_13: React.FC = () => {
       </View>
 
       <View style={styles.controlsRow}>
-        <TouchableOpacity 
-          style={[styles.button, styles.pauseButton, serviceState !== 'running' && styles.buttonDisabled]} 
+        <TouchableOpacity
+          style={[styles.button, styles.pauseButton, serviceState !== 'running' && styles.buttonDisabled]}
           onPress={pauseService}
           disabled={serviceState !== 'running'}
         >
           <Text style={styles.buttonText}>Пауза</Text>
         </TouchableOpacity>
-        
-        <TouchableOpacity 
-          style={[styles.button, styles.resumeButton, serviceState !== 'stopped' && styles.buttonDisabled]} 
+
+        <TouchableOpacity
+          style={[styles.button, styles.resumeButton, serviceState !== 'stopped' && styles.buttonDisabled]}
           onPress={resumeService}
           disabled={serviceState !== 'stopped'}
         >
@@ -215,33 +128,33 @@ const App_13: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
+    ...commonStyles.container,
+    backgroundColor: colors.white,
     padding: 16,
   },
   title: {
+    ...commonStyles.title,
     fontSize: 20,
     fontWeight: '800',
-    color: '#212121',
+    color: colors.textPrimary,
     marginBottom: 6,
   },
   subtitle: {
+    ...commonStyles.subtitle,
     fontSize: 14,
-    color: '#616161',
     marginBottom: 20,
   },
   statusBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F5F5F5',
+    ...commonStyles.row,
+    backgroundColor: colors.backgroundGrey,
     padding: 16,
     borderRadius: 12,
     marginBottom: 20,
-  },
+  } as ViewStyle,
   statusLabel: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#424242',
+    color: colors.textSecondary,
     marginRight: 12,
   },
   statusIndicator: {
@@ -255,9 +168,9 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   controlsRow: {
-    flexDirection: 'row',
+    ...commonStyles.row,
     marginBottom: 12,
-  },
+  } as ViewStyle,
   button: {
     flex: 1,
     paddingVertical: 14,
@@ -267,27 +180,27 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
   },
   startButton: {
-    backgroundColor: '#43A047',
+    backgroundColor: colors.success,
   },
   stopButton: {
-    backgroundColor: '#E53935',
+    backgroundColor: colors.danger,
   },
   pauseButton: {
-    backgroundColor: '#FF9800',
+    backgroundColor: colors.warning,
   },
   resumeButton: {
-    backgroundColor: '#2196F3',
+    backgroundColor: colors.primary,
   },
   buttonDisabled: {
-    backgroundColor: '#E0E0E0',
+    backgroundColor: colors.divider,
   },
   buttonText: {
-    color: '#ffffff',
+    color: colors.white,
     fontSize: 16,
     fontWeight: '700',
   },
   infoButton: {
-    backgroundColor: '#9C27B0',
+    backgroundColor: colors.accentPurple,
     paddingVertical: 14,
     paddingHorizontal: 16,
     borderRadius: 10,
@@ -295,14 +208,14 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   infoBox: {
-    backgroundColor: '#E8F5E8',
+    backgroundColor: colors.successBackground,
     padding: 16,
     borderRadius: 12,
     marginTop: 16,
   },
   infoText: {
     fontSize: 14,
-    color: '#2E7D32',
+    color: colors.successText,
     fontFamily: 'monospace',
   },
 });

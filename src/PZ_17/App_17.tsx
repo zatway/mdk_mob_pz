@@ -8,7 +8,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View, ViewStyle,
 } from 'react-native';
 import {
   ImageLibraryOptions,
@@ -20,6 +20,8 @@ import PhotoManipulator, {
   RotationMode,
 } from 'react-native-photo-manipulator';
 import RNFS from 'react-native-fs';
+import {commonStyles} from '../styles/commonStyles.ts';
+import {colors} from '../styles/colors.ts';
 
 type Screen = 'Main' | 'Edit';
 
@@ -292,25 +294,26 @@ const App_17: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
+    ...commonStyles.container,
+    backgroundColor: colors.white,
     padding: 16,
   },
   title: {
+    ...commonStyles.title,
     fontSize: 20,
     fontWeight: '800',
-    color: '#212121',
+    color: colors.textPrimary,
     marginBottom: 6,
     textAlign: 'center',
   },
   subtitle: {
+    ...commonStyles.subtitle,
     fontSize: 14,
-    color: '#616161',
     marginBottom: 20,
     textAlign: 'center',
   },
   pickButton: {
-    backgroundColor: '#6200EE',
+    backgroundColor: colors.primaryPurple,
     paddingVertical: 20,
     paddingHorizontal: 32,
     borderRadius: 12,
@@ -319,55 +322,52 @@ const styles = StyleSheet.create({
     marginTop: 100,
   },
   pickButtonText: {
-    color: '#ffffff',
+    color: colors.white,
     fontSize: 18,
     fontWeight: '700',
   },
   imageContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5F5F5',
+    ...commonStyles.containerCentered,
+    backgroundColor: colors.backgroundGrey,
     borderRadius: 12,
     marginBottom: 16,
     padding: 20,
     minHeight: 300,
-  },
+  } as ViewStyle,
   image: {
     width: '100%',
     height: '100%',
     maxHeight: 400,
   },
   controlsRow: {
-    flexDirection: 'row',
+    ...commonStyles.row,
     justifyContent: 'space-around',
     marginBottom: 16,
     paddingVertical: 12,
-  },
+  } as ViewStyle,
   controlButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    ...commonStyles.containerCentered,
     width: 70,
     height: 70,
-    backgroundColor: '#E0E0E0',
+    backgroundColor: colors.divider,
     borderRadius: 35,
-  },
+  } as ViewStyle,
   controlButtonText: {
     fontSize: 28,
     marginBottom: 4,
   },
   controlButtonLabel: {
     fontSize: 10,
-    color: '#424242',
+    color: colors.textSecondary,
     fontWeight: '600',
   },
   additionalControlsRow: {
-    flexDirection: 'row',
+    ...commonStyles.row,
     justifyContent: 'space-around',
     marginBottom: 16,
-  },
+  } as ViewStyle,
   additionalButton: {
-    backgroundColor: '#9C27B0',
+    backgroundColor: colors.accentPurple,
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderRadius: 10,
@@ -376,12 +376,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
   },
   additionalButtonText: {
-    color: '#ffffff',
+    color: colors.white,
     fontSize: 14,
     fontWeight: '700',
   },
   backButton: {
-    backgroundColor: '#9E9E9E',
+    backgroundColor: colors.greyMedium,
     paddingVertical: 14,
     paddingHorizontal: 16,
     borderRadius: 10,
@@ -389,7 +389,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   backButtonText: {
-    color: '#ffffff',
+    color: colors.white,
     fontSize: 16,
     fontWeight: '700',
   },

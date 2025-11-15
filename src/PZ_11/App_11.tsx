@@ -1,5 +1,17 @@
 import React, {useState} from 'react';
-import {SafeAreaView, View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, Alert} from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Alert,
+  ViewStyle,
+} from 'react-native';
+import {commonStyles} from '../styles/commonStyles.ts';
+import {colors} from '../styles/colors.ts';
 
 type Product = {
   id: string;
@@ -23,9 +35,15 @@ const App_11: React.FC = () => {
   const addNew = () => {
     if (!title.trim()) return Alert.alert('Ошибка', 'Введите название товара');
     const q = Number(quantity || '0');
-    if (!Number.isFinite(q) || q <= 0) return Alert.alert('Ошибка', 'Количество должно быть больше 0');
+    if (!Number.isFinite(q) || q <= 0)
+      return Alert.alert('Ошибка', 'Количество должно быть больше 0');
     if (!unit.trim()) return Alert.alert('Ошибка', 'Введите единицу измерения');
-    const p: Product = {id: String(Date.now()), title: title.trim(), quantity: q, unit: unit.trim()};
+    const p: Product = {
+      id: String(Date.now()),
+      title: title.trim(),
+      quantity: q,
+      unit: unit.trim(),
+    };
     setProducts(prev => [p, ...prev]);
     setTitle('');
     setQuantity('');
@@ -34,7 +52,9 @@ const App_11: React.FC = () => {
 
   const changeQty = (id: string, delta: number) => {
     setProducts(prev =>
-      prev.map(p => (p.id === id ? {...p, quantity: Math.max(0, p.quantity + delta)} : p)),
+      prev.map(p =>
+        p.id === id ? {...p, quantity: Math.max(0, p.quantity + delta)} : p,
+      ),
     );
   };
 
@@ -52,13 +72,19 @@ const App_11: React.FC = () => {
           </Text>
         </View>
         <View style={styles.itemButtons}>
-          <TouchableOpacity style={styles.smallBtn} onPress={() => changeQty(item.id, -1)}>
+          <TouchableOpacity
+            style={styles.smallBtn}
+            onPress={() => changeQty(item.id, -1)}>
             <Text style={styles.smallBtnText}>-</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.smallBtn} onPress={() => changeQty(item.id, +1)}>
+          <TouchableOpacity
+            style={styles.smallBtn}
+            onPress={() => changeQty(item.id, +1)}>
             <Text style={styles.smallBtnText}>+</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.smallBtn, {backgroundColor: '#E53935'}]} onPress={() => removeIfZero(item.id)}>
+          <TouchableOpacity
+            style={[styles.smallBtn, {backgroundColor: '#E53935'}]}
+            onPress={() => removeIfZero(item.id)}>
             <Text style={styles.smallBtnText}>×</Text>
           </TouchableOpacity>
         </View>
@@ -71,11 +97,27 @@ const App_11: React.FC = () => {
       <Text style={styles.title}>Сложный список товаров</Text>
 
       <View style={styles.newRow}>
-        <TextInput style={[styles.input, {flex: 1}]} placeholder="Название" value={title} onChangeText={setTitle} />
+        <TextInput
+          style={[styles.input, {flex: 1}]}
+          placeholder="Название"
+          value={title}
+          onChangeText={setTitle}
+        />
       </View>
       <View style={styles.newRow}>
-        <TextInput style={[styles.input, {flex: 1}]} placeholder="Количество" value={quantity} onChangeText={setQuantity} keyboardType="numeric" />
-        <TextInput style={[styles.input, {flex: 1, marginLeft: 8}]} placeholder="Ед. изм." value={unit} onChangeText={setUnit} />
+        <TextInput
+          style={[styles.input, {flex: 1}]}
+          placeholder="Количество"
+          value={quantity}
+          onChangeText={setQuantity}
+          keyboardType="numeric"
+        />
+        <TextInput
+          style={[styles.input, {flex: 1, marginLeft: 8}]}
+          placeholder="Ед. изм."
+          value={unit}
+          onChangeText={setUnit}
+        />
       </View>
       <TouchableOpacity style={styles.addBtn} onPress={addNew}>
         <Text style={styles.addBtnText}>Добавить товар</Text>
@@ -94,73 +136,63 @@ const App_11: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
+    ...commonStyles.container,
+    backgroundColor: colors.white,
     padding: 16,
   },
   title: {
-    fontSize: 18,
+    ...commonStyles.title,
+    color: colors.textPrimary,
     fontWeight: '700',
-    color: '#212121',
   },
   newRow: {
-    flexDirection: 'row',
+    ...commonStyles.row,
     marginTop: 10,
-  },
+  } as ViewStyle,
   input: {
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    backgroundColor: '#FAFAFA',
+    ...commonStyles.input,
   },
   addBtn: {
     marginTop: 10,
-    backgroundColor: '#1E88E5',
+    backgroundColor: colors.info,
     borderRadius: 10,
     paddingVertical: 12,
     alignItems: 'center',
   },
   addBtnText: {
-    color: '#ffffff',
+    color: colors.white,
     fontWeight: '700',
   },
   itemRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F9F9F9',
+    ...commonStyles.row,
+    backgroundColor: colors.backgroundListItem,
     borderRadius: 12,
     padding: 12,
-  },
+  } as ViewStyle,
   itemTitle: {
-    color: '#212121',
+    color: colors.textPrimary,
     fontWeight: '700',
   },
   itemMeta: {
-    color: '#616161',
+    color: colors.textTertiary,
     marginTop: 2,
   },
   itemButtons: {
-    flexDirection: 'row',
+    ...commonStyles.row,
     marginLeft: 8,
-  },
+  } as ViewStyle,
   smallBtn: {
-    backgroundColor: '#43A047',
+    backgroundColor: colors.success,
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 8,
     marginLeft: 6,
   },
   smallBtnText: {
-    color: '#ffffff',
+    color: colors.white,
     fontWeight: '800',
     fontSize: 16,
   },
 });
 
 export default App_11;
-
-
-
-

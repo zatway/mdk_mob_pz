@@ -5,12 +5,14 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Alert,
+  Alert, ViewStyle,
 } from 'react-native';
 import MethodChip from './MethodChip.tsx';
 import LabeledInput from './LabeledInput.tsx';
 import {UserSerializable} from './UserSerializable.ts';
 import {UserParcelable} from './UserParcelable.ts';
+import {commonStyles} from '../styles/commonStyles.ts';
+import {colors} from '../styles/colors.ts';
 
 type TransferMethod = 'putExtra' | 'serializable' | 'parcelable';
 
@@ -224,72 +226,69 @@ const App_8: React.FC = () => {
     </SafeAreaView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
+    ...commonStyles.container,
+    backgroundColor: colors.white,
     padding: 16,
   },
   headerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    ...commonStyles.row,
     marginBottom: 12,
-  },
+  } as ViewStyle,
   backButton: {
     paddingVertical: 8,
     paddingHorizontal: 12,
-    backgroundColor: '#EEEEEE',
+    backgroundColor: colors.greyLight,
     borderRadius: 8,
     marginRight: 12,
   },
   backText: {
-    color: '#1E88E5',
+    color: colors.info,
     fontWeight: '600',
   },
   title: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#212121',
+    color: colors.textPrimary,
   },
   methodsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    ...commonStyles.rowSpaceBetween,
     marginTop: 12,
-  },
+  } as ViewStyle,
   form: {
     marginTop: 16,
   },
   saveButton: {
     marginTop: 8,
-    backgroundColor: '#1E88E5',
+    backgroundColor: colors.info,
     paddingVertical: 14,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
   saveButtonDisabled: {
-    backgroundColor: '#90CAF9',
+    backgroundColor: colors.infoLight,
   },
   saveText: {
-    color: '#ffffff',
+    color: colors.white,
     fontWeight: '700',
     fontSize: 16,
   },
   hint: {
     marginTop: 6,
-    color: '#757575',
+    color: colors.textHint,
     fontSize: 12,
   },
   resultBox: {
     marginTop: 12,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: colors.backgroundGrey,
     borderRadius: 10,
     padding: 12,
   },
   resultLine: {
     fontSize: 16,
-    color: '#212121',
+    color: colors.textPrimary,
     marginVertical: 4,
   },
 });

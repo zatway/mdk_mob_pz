@@ -7,8 +7,10 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
+  SafeAreaView, ViewStyle,
 } from 'react-native';
+import {colors} from '../styles/colors.ts';
+import {commonStyles} from '../styles/commonStyles.ts';
 
 type Operation = '+' | '-' | '×' | '÷' | null;
 
@@ -128,24 +130,22 @@ const App_6: React.FC = () => {
     </SafeAreaView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    ...commonStyles.container,
     padding: 16,
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.white,
     justifyContent: 'center',
   },
   computeRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    ...commonStyles.row,
     alignSelf: 'center',
     width: 345,
     marginBottom: 24,
-  },
+  } as ViewStyle,
   edit: {
-    backgroundColor: '#F5F5F5',
-    color: '#212121',
+    backgroundColor: colors.backgroundGrey,
+    color: colors.textPrimary,
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
@@ -158,19 +158,19 @@ const styles = StyleSheet.create({
     width: 40,
     textAlign: 'center',
     fontSize: 30,
-    color: '#424242',
+    color: colors.textSecondary,
   },
   equal: {
     width: 24,
     textAlign: 'center',
     fontSize: 20,
-    color: '#616161',
+    color: colors.textTertiary,
   },
   result: {
     minWidth: 80,
     textAlign: 'right',
     fontSize: 20,
-    color: '#000000',
+    color: colors.black,
   },
   grid: {
     alignSelf: 'center',
@@ -182,14 +182,14 @@ const styles = StyleSheet.create({
   button: {
     width: (350 - 16 * 2) / 3 - 4,
     height: 56,
-    backgroundColor: '#2196F3',
+    backgroundColor: colors.primary,
     marginVertical: 8,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
   buttonText: {
-    color: '#ffffff',
+    color: colors.white,
     fontSize: 20,
     fontWeight: 'bold',
   },
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
   },
   buttonWide: {
     width: 350,
-    backgroundColor: '#E53935',
+    backgroundColor: colors.danger,
   },
 });
 

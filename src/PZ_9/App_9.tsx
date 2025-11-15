@@ -1,6 +1,18 @@
 import React, {useMemo, useState} from 'react';
-import {SafeAreaView, View, Text, TextInput, StyleSheet, FlatList, Image, TouchableOpacity} from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  ViewStyle,
+} from 'react-native';
 import {parseUsersFromStringArray, usersStringArray, User} from './resources.ts';
+import {commonStyles} from '../styles/commonStyles.ts';
+import {colors} from '../styles/colors.ts';
 
 const App_9: React.FC = () => {
   const allUsers = useMemo(() => parseUsersFromStringArray(usersStringArray), []);
@@ -47,38 +59,31 @@ const App_9: React.FC = () => {
     </SafeAreaView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
+    ...commonStyles.container,
+    backgroundColor: colors.white,
     padding: 16,
   },
   title: {
-    fontSize: 18,
+    ...commonStyles.title,
+    color: colors.textPrimary,
     fontWeight: '700',
     marginBottom: 12,
-    color: '#212121',
   },
   search: {
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    backgroundColor: '#FAFAFA',
+    ...commonStyles.input,
     marginBottom: 12,
   },
   separator: {
     height: 8,
   },
   itemRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F9F9F9',
+    ...commonStyles.row,
+    backgroundColor: colors.backgroundListItem,
     borderRadius: 12,
     padding: 12,
-  },
+  } as ViewStyle,
   avatar: {
     width: 44,
     height: 44,
@@ -90,11 +95,11 @@ const styles = StyleSheet.create({
   },
   itemName: {
     fontWeight: '700',
-    color: '#212121',
+    color: colors.textPrimary,
   },
   itemMeta: {
     marginTop: 2,
-    color: '#616161',
+    color: colors.textTertiary,
   },
   moreBtn: {
     paddingHorizontal: 8,
@@ -102,7 +107,7 @@ const styles = StyleSheet.create({
   },
   moreText: {
     fontSize: 20,
-    color: '#9E9E9E',
+    color: colors.greyMedium,
   },
 });
 

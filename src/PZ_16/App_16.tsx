@@ -7,9 +7,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   FlatList,
-  Alert,
+  Alert, ViewStyle, TextStyle,
 } from 'react-native';
 import {DatabaseHelper} from './DatabaseHelper';
+import { colors } from '../styles/colors';
+import {commonStyles} from '../styles/commonStyles.ts';
 
 type User = {
   id: number;
@@ -217,26 +219,26 @@ const App_16: React.FC = () => {
     </SafeAreaView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
+    ...commonStyles.container,
+    backgroundColor: colors.white,
     padding: 16,
   },
   title: {
+    ...commonStyles.title,
     fontSize: 20,
     fontWeight: '800',
-    color: '#212121',
+    color: colors.textPrimary,
     marginBottom: 6,
   },
   subtitle: {
+    ...commonStyles.subtitle,
     fontSize: 14,
-    color: '#616161',
     marginBottom: 20,
   },
   addButton: {
-    backgroundColor: '#43A047',
+    backgroundColor: colors.success,
     paddingVertical: 14,
     paddingHorizontal: 16,
     borderRadius: 10,
@@ -244,34 +246,30 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   addButtonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: '700',
-  },
+    ...commonStyles.buttonText,
+  } as TextStyle,
   userItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F9F9F9',
+    ...commonStyles.rowSpaceBetween,
+    backgroundColor: colors.backgroundListItem,
     padding: 16,
     borderRadius: 12,
-    justifyContent: 'space-between',
-  },
+  } as ViewStyle,
   userInfo: {
     flex: 1,
   },
   userName: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#212121',
+    color: colors.textPrimary,
     marginBottom: 4,
   },
   userDetails: {
     fontSize: 14,
-    color: '#616161',
+    color: colors.textTertiary,
   },
   arrow: {
     fontSize: 20,
-    color: '#9E9E9E',
+    color: colors.greyMedium,
     marginLeft: 12,
   },
   separator: {
@@ -284,12 +282,12 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#9E9E9E',
+    color: colors.greyMedium,
     marginBottom: 8,
   },
   emptySubtext: {
     fontSize: 14,
-    color: '#BDBDBD',
+    color: colors.greyBorder,
   },
   form: {
     marginBottom: 20,
@@ -297,24 +295,19 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#424242',
+    color: colors.textSecondary,
     marginBottom: 8,
     marginTop: 12,
   },
   input: {
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-    borderRadius: 8,
-    paddingHorizontal: 12,
+    ...commonStyles.input,
     paddingVertical: 12,
-    backgroundColor: '#FAFAFA',
-    fontSize: 16,
   },
   buttonsRow: {
-    flexDirection: 'row',
+    ...commonStyles.row,
     marginBottom: 12,
     gap: 8,
-  },
+  } as ViewStyle,
   button: {
     flex: 1,
     paddingVertical: 14,
@@ -324,20 +317,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   saveButton: {
-    backgroundColor: '#6200EE',
+    backgroundColor: colors.primaryPurple,
   },
   deleteButton: {
-    backgroundColor: '#E53935',
+    backgroundColor: colors.danger,
   },
   cancelButton: {
-    backgroundColor: '#9E9E9E',
+    backgroundColor: colors.greyMedium,
     marginTop: 8,
   },
   buttonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: '700',
-  },
+    ...commonStyles.buttonText,
+  } as TextStyle,
 });
 
 export default App_16;
