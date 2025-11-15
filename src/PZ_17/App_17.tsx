@@ -1,164 +1,192 @@
 import React, {useState} from 'react';
 import {
-  SafeAreaView,
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  Alert,
   ActivityIndicator,
+  Alert,
+  Image,
+  Image as RNImage,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import {launchImageLibrary, ImagePickerResponse, MediaType} from 'react-native-image-picker';
-import * as ImageManipulator from 'react-native-image-manipulator';
+import {
+  ImageLibraryOptions,
+  launchImageLibrary,
+} from 'react-native-image-picker';
+import PhotoManipulator, {
+  FlipMode,
+  ImageSource,
+  RotationMode,
+} from 'react-native-photo-manipulator';
+import RNFS from 'react-native-fs';
 
 type Screen = 'Main' | 'Edit';
 
 const App_17: React.FC = () => {
   const [screen, setScreen] = useState<Screen>('Main');
   const [imageUri, setImageUri] = useState<string | null>(null);
-  const [editedImageUri, setEditedImageUri] = useState<string | null>(null);
+  const [editedImage, setEditedImage] = useState<ImageSource | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [rotation, setRotation] = useState(0);
-  const [flipHorizontal, setFlipHorizontal] = useState(false);
-  const [flipVertical, setFlipVertical] = useState(false);
+  const [rotation, setRotation] = useState<number>(0);
 
-  const PICK_IMAGE_REQUEST_CODE = 100;
-
-  // Выбор фотографии (аналог onActivityResult)
   const pickPhoto = () => {
-    const options = {
-      mediaType: 'photo' as MediaType,
+    const options: ImageLibraryOptions = {
+      mediaType: 'photo',
       quality: 1,
     };
-
-    launchImageLibrary(options, (response: ImagePickerResponse) => {
-      if (response.didCancel) {
-        return;
-      }
+    launchImageLibrary(options, async (response) => {
+      if (response.didCancel) return;
       if (response.errorMessage) {
         Alert.alert('Ошибка', response.errorMessage);
         return;
       }
+
       if (response.assets && response.assets[0]) {
-        const uri = response.assets[0].uri;
+        let uri = response.assets[0].uri;
         if (uri) {
-          setImageUri(uri);
-          setEditedImageUri(uri);
-          setRotation(0);
-          setFlipHorizontal(false);
-          setFlipVertical(false);
+          const realUri = await getRealPath(uri);
+          setImageUri(realUri);
+          setEditedImage(realUri);
           setScreen('Edit');
         }
       }
     });
   };
 
-  // Поворот на 90 градусов по часовой
-  const rotateRight = async () => {
-    if (!editedImageUri) return;
+  async function getRealPath(uri: string): Promise<string> {
+    if (uri.startsWith('file://')) return uri;
+
+    const newPath = RNFS.CachesDirectoryPath + '/image_' + Date.now() + '.jpg';
+    await RNFS.copyFile(uri, newPath);
+    return 'file://' + newPath;
+  }
+
+  const getRotationMode = (angle: number): RotationMode => {
+    // angle должен быть 0, 90, 180, 270
+    const normalized = ((angle % 360) + 360) % 360; // нормализуем в [0, 360)
+    switch (normalized) {
+      case 90:
+        return RotationMode.R90;
+      case 180:
+        return RotationMode.R180;
+      case 270:
+        return RotationMode.R270;
+      default:
+        return RotationMode.R90; // на случай 0 или некорректного значения
+    }
+  };
+
+  const rotateImage = async (direction: 'left' | 'right') => {
+    if (!editedImage) return;
     setIsProcessing(true);
+
     try {
-      const result = await ImageManipulator.manipulateAsync(
-        editedImageUri,
-        [{rotate: 90}],
-        {compress: 1, format: ImageManipulator.SaveFormat.PNG},
-      );
-      setEditedImageUri(result.uri);
-      setRotation((prev) => (prev + 90) % 360);
-    } catch (error) {
-      Alert.alert('Ошибка', 'Не удалось повернуть изображение');
+      // Считаем новый угол
+      const newRotation = direction === 'right'
+        ? (rotation + 90) % 360
+        : (rotation - 90 + 360) % 360; // +360 чтобы не было отрицательного
+
+      // Выбираем RotationMode
+      const rotationMode = getRotationMode(newRotation);
+
+      const result = await PhotoManipulator.rotateImage(editedImage, rotationMode);
+
+      setEditedImage(result);
+      setRotation(newRotation);
+
+    } catch {
+      Alert.alert("Ошибка", "Не удалось повернуть изображение");
     } finally {
       setIsProcessing(false);
     }
   };
 
-  // Поворот на 90 градусов против часовой
-  const rotateLeft = async () => {
-    if (!editedImageUri) return;
-    setIsProcessing(true);
-    try {
-      const result = await ImageManipulator.manipulateAsync(
-        editedImageUri,
-        [{rotate: -90}],
-        {compress: 1, format: ImageManipulator.SaveFormat.PNG},
-      );
-      setEditedImageUri(result.uri);
-      setRotation((prev) => (prev - 90 + 360) % 360);
-    } catch (error) {
-      Alert.alert('Ошибка', 'Не удалось повернуть изображение');
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  // Отражение по горизонтали
   const flipHorizontally = async () => {
-    if (!editedImageUri) return;
+    if (!editedImage) return;
     setIsProcessing(true);
     try {
-      const result = await ImageManipulator.manipulateAsync(
-        editedImageUri,
-        [{flip: ImageManipulator.FlipType.Horizontal}],
-        {compress: 1, format: ImageManipulator.SaveFormat.PNG},
-      );
-      setEditedImageUri(result.uri);
-      setFlipHorizontal((prev) => !prev);
-    } catch (error) {
-      Alert.alert('Ошибка', 'Не удалось отразить изображение');
+      const result = await PhotoManipulator.flipImage(editedImage, FlipMode.Horizontal);
+      setEditedImage(result);
+    } catch {
+      Alert.alert("Ошибка", "Не удалось отразить изображение");
     } finally {
       setIsProcessing(false);
     }
   };
 
-  // Отражение по вертикали
   const flipVertically = async () => {
-    if (!editedImageUri) return;
+    if (!editedImage) return;
     setIsProcessing(true);
     try {
-      const result = await ImageManipulator.manipulateAsync(
-        editedImageUri,
-        [{flip: ImageManipulator.FlipType.Vertical}],
-        {compress: 1, format: ImageManipulator.SaveFormat.PNG},
-      );
-      setEditedImageUri(result.uri);
-      setFlipVertical((prev) => !prev);
-    } catch (error) {
-      Alert.alert('Ошибка', 'Не удалось отразить изображение');
+      const result = await PhotoManipulator.flipImage(editedImage, FlipMode.Vertical);
+      setEditedImage(result);
+    } catch {
+      Alert.alert("Ошибка", "Не удалось отразить изображение");
     } finally {
       setIsProcessing(false);
     }
   };
 
-  // Дополнительная функция: изменение размера (масштабирование)
   const resizeImage = async (scale: number) => {
-    if (!editedImageUri) return;
+    if (!editedImage) return;
     setIsProcessing(true);
+
     try {
-      const result = await ImageManipulator.manipulateAsync(
-        editedImageUri,
-        [{resize: {width: undefined, height: undefined}}], // Получаем размеры
-        {compress: 1, format: ImageManipulator.SaveFormat.PNG},
+      const size = await new Promise<{ width: number; height: number }>((resolve, reject) => {
+        RNImage.getSize(
+          editedImage.toString(),
+          (width, height) => resolve({ width, height }),
+          reject
+        );
+      });
+
+      const newWidth = Math.round(size.width * scale);
+      const newHeight = Math.round(size.height * scale);
+
+      const result = await PhotoManipulator.crop(
+        editedImage,
+        { x: 0, y: 0, width: size.width, height: size.height },
+        { width: newWidth, height: newHeight }
       );
-      // Для масштабирования нужно получить размеры изображения
-      // Упрощенная версия - используем scale
-      Alert.alert('Информация', `Масштаб: ${(scale * 100).toFixed(0)}%`);
-    } catch (error) {
-      Alert.alert('Ошибка', 'Не удалось изменить размер');
+
+      setEditedImage(result);
+
+    } catch {
+      Alert.alert("Ошибка", "Не удалось изменить размер изображения");
     } finally {
       setIsProcessing(false);
     }
   };
 
-  // Дополнительная функция: обрезка (crop)
   const cropImage = async () => {
-    if (!editedImageUri) return;
+    if (!editedImage) return;
     setIsProcessing(true);
+
     try {
-      // Упрощенная версия - обрезка по центру
-      Alert.alert('Информация', 'Функция обрезки (упрощенная версия)');
-    } catch (error) {
-      Alert.alert('Ошибка', 'Не удалось обрезать изображение');
+      const size = await new Promise<{width: number, height: number}>((resolve, reject) => {
+        RNImage.getSize(
+            editedImage.toString(),
+          (width, height) => resolve({width, height}),
+          reject
+        );
+      });
+
+      const cropWidth = size.width * 0.8;
+      const cropHeight = size.height * 0.8;
+
+      const rect = {
+        x: (size.width - cropWidth) / 2,
+        y: (size.height - cropHeight) / 2,
+        width: cropWidth,
+        height: cropHeight,
+      };
+
+      const result = await PhotoManipulator.crop(editedImage, rect);
+      setEditedImage(result);
+
+    } catch {
+      Alert.alert("Ошибка", "Не удалось обрезать изображение");
     } finally {
       setIsProcessing(false);
     }
@@ -167,10 +195,7 @@ const App_17: React.FC = () => {
   // Сброс к оригиналу
   const resetImage = () => {
     if (imageUri) {
-      setEditedImageUri(imageUri);
-      setRotation(0);
-      setFlipHorizontal(false);
-      setFlipVertical(false);
+      setEditedImage(imageUri)
     }
   };
 
@@ -178,10 +203,7 @@ const App_17: React.FC = () => {
   const goHome = () => {
     setScreen('Main');
     setImageUri(null);
-    setEditedImageUri(null);
-    setRotation(0);
-    setFlipHorizontal(false);
-    setFlipVertical(false);
+    setEditedImage(null);
   };
 
   // MainActivity - выбор фотографии
@@ -207,19 +229,19 @@ const App_17: React.FC = () => {
         {isProcessing ? (
           <ActivityIndicator size="large" color="#6200EE" />
         ) : (
-          editedImageUri && (
-            <Image source={{uri: editedImageUri}} style={styles.image} resizeMode="contain" />
+          editedImage && (
+            <Image source={{uri: editedImage.toString()}} style={styles.image} resizeMode="contain" />
           )
         )}
       </View>
 
       <View style={styles.controlsRow}>
-        <TouchableOpacity style={styles.controlButton} onPress={rotateLeft} disabled={isProcessing}>
+        <TouchableOpacity style={styles.controlButton} onPress={() => rotateImage('left')} disabled={isProcessing}>
           <Text style={styles.controlButtonText}>↺</Text>
           <Text style={styles.controlButtonLabel}>Влево</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.controlButton} onPress={rotateRight} disabled={isProcessing}>
+        <TouchableOpacity style={styles.controlButton} onPress={() => rotateImage('right')} disabled={isProcessing}>
           <Text style={styles.controlButtonText}>↻</Text>
           <Text style={styles.controlButtonLabel}>Вправо</Text>
         </TouchableOpacity>

@@ -1,11 +1,9 @@
 import SQLite, {SQLiteDatabase} from 'react-native-sqlite-storage';
 
-// DatabaseHelper класс (аналог SQLiteOpenHelper)
 export class DatabaseHelper {
   private static instance: DatabaseHelper | null = null;
   private db: SQLiteDatabase | null = null;
   private readonly DB_NAME = 'users.db';
-  private readonly DB_VERSION = 1;
 
   static getInstance(): DatabaseHelper {
     if (!DatabaseHelper.instance) {
@@ -40,17 +38,14 @@ export class DatabaseHelper {
   private async createTables() {
     if (!this.db) return;
 
-    // Таблица пользователей
     const createUsersTable = `
       CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         age INTEGER NOT NULL,
         email TEXT
-      )
-    `;
+      )`;
 
-    // Таблица адресов (дополнительная таблица по заданию)
     const createAddressesTable = `
       CREATE TABLE IF NOT EXISTS addresses (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -58,8 +53,7 @@ export class DatabaseHelper {
         address TEXT NOT NULL,
         city TEXT,
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-      )
-    `;
+      )`;
 
     return new Promise<void>((resolve, reject) => {
       this.db!.executeSql(
