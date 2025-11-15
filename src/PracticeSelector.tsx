@@ -4,7 +4,7 @@ import {
   TouchableOpacity,
   Text,
   StyleSheet,
-  ScrollView,
+  ScrollView, ViewStyle, TextStyle,
 } from 'react-native';
 import App_1 from './PZ_1/App_1';
 import App_2 from './PZ_2/App_2';
@@ -24,6 +24,8 @@ import App_15 from './PZ_15/App_15.tsx';
 import App_16 from './PZ_16/App_16.tsx';
 import App_17 from './PZ_17/App_17.tsx';
 import App_18 from './PZ_18/App_18';
+import {commonStyles} from './styles/commonStyles.ts';
+import {colors} from './styles/colors.ts';
 
 const PracticeWrapper = ({
   children,
@@ -216,18 +218,16 @@ const PracticeSelector = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
+    ...commonStyles.containerCentered,
+    backgroundColor: colors.white,
+  } as ViewStyle,
   scrollContent: {
     paddingVertical: 20,
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   button: {
-    backgroundColor: '#2196F3',
+    backgroundColor: colors.primary,
     paddingVertical: 16,
     paddingHorizontal: 32,
     borderRadius: 6,
@@ -236,20 +236,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    color: '#fff',
+    ...commonStyles.buttonText,
     fontSize: 18,
-    fontWeight: 'bold',
-  },
+  } as TextStyle,
   backButton: {
-    backgroundColor: '#eee',
+    backgroundColor: colors.greyLight,
     paddingVertical: 10,
     paddingHorizontal: 18,
     alignItems: 'center',
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomColor: colors.divider,
   },
   backButtonText: {
-    color: '#2196F3',
+    color: colors.primary,
     fontSize: 16,
     fontWeight: 'bold',
   },
