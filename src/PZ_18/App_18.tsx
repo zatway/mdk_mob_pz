@@ -14,7 +14,7 @@ import {ConnectFetch} from './ConnectFetch';
 import {StaticWeatherAnalyze} from './StaticWeatherAnalyze';
 
 // API ключ OpenWeatherMap (замените на свой!)
-const API_KEY = '6024451a53cc956ea99b639a491a7b5c'; // Получите на https://home.openweathermap.org/api_keys
+const API_KEY = '6024451a53cc956ea99b639a491a7b5c';
 
 const App_18: React.FC = () => {
   const [city, setCity] = useState('Orenburg');
@@ -30,7 +30,15 @@ const App_18: React.FC = () => {
     if (API_KEY === undefined) {
       Alert.alert(
         'Ошибка',
-        'Необходимо указать API ключ OpenWeatherMap!\nПолучите его на https://home.openweathermap.org/api_keys',
+        'Необходимо указать API ключ OpenWeatherMap!',
+      );
+      return;
+    }
+
+    if(cityName.trim() === null || cityName.trim() === undefined) {
+      Alert.alert(
+        'Ошибка',
+        'Не введено название города',
       );
       return;
     }

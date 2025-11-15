@@ -1,4 +1,4 @@
-import SQLite, { SQLiteDatabase } from 'react-native-sqlite-storage';
+import SQLite, {SQLiteDatabase} from 'react-native-sqlite-storage';
 
 export class DatabaseHelper {
   private static instance: DatabaseHelper | null = null;
@@ -13,7 +13,9 @@ export class DatabaseHelper {
   }
 
   async openDatabase(): Promise<SQLiteDatabase> {
-    if (this.db) return this.db;
+    if (this.db) {
+      return this.db;
+    }
 
     return new Promise((resolve, reject) => {
       SQLite.openDatabase(
@@ -21,120 +23,188 @@ export class DatabaseHelper {
           name: this.DB_NAME,
           location: 'default',
         },
-        async (db: SQLiteDatabase) => {
+        (db: any) => {
           this.db = db;
-          try {
-            await this.createTables(); // ждем создания таблиц
-            resolve(db);
-          } catch (error) {
-            reject(error);
-          }
+          this.createTables();
+          resolve(db);
         },
-        (error) => reject(error)
+        (error: any) => {
+          reject(error);
+        },
       );
     });
   }
 
-  private async createTables(): Promise<void> {
+  private async createTables() {
     if (!this.db) return;
 
     const createUsersTable = `
       CREATE TABLE IF NOT EXISTS users (
-                                         id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                         name TEXT NOT NULL,
-                                         age INTEGER NOT NULL,
-                                         email TEXT
-      );`;
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        age INTEGER NOT NULL,
+        email TEXT
+      )`;
 
     const createAddressesTable = `
       CREATE TABLE IF NOT EXISTS addresses (
-                                             id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                             user_id INTEGER NOT NULL,
-                                             address TEXT NOT NULL,
-                                             city TEXT,
-                                             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-        );`;
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        address TEXT NOT NULL,
+        city TEXT,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+      )`;
 
-    await this.executeSqlAsync(createUsersTable);
-    await this.executeSqlAsync(createAddressesTable);
-  }
-
-  private async executeSqlAsync(sql: string, params: any[] = []): Promise<any> {
-    if (!this.db) throw new Error('Database not opened');
-
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       this.db!.executeSql(
-        sql,
-        params,
-        (result) => resolve(result), // тут только result
-        (error) => reject(error)     // и тут только error
+        createUsersTable,
+        [],
+        () => {
+          this.db!.executeSql(
+            createAddressesTable,
+            [],
+            () => resolve(),
+            (error: any) => reject(error),
+          );
+        },
+        (error) => reject(error),
       );
     });
   }
 
-  // INSERT USER
+  // INSERT
   async insertUser(name: string, age: number, email: string = ''): Promise<number> {
-    const result = await this.executeSqlAsync(
-      'INSERT INTO users (name, age, email) VALUES (?, ?, ?)',
-      [name, age, email]
-    );
-    return result.insertId!;
+    const db = await this.openDatabase();
+    return new Promise((resolve, reject) => {
+      db.executeSql(
+        'INSERT INTO users (name, age, email) VALUES (?, ?, ?)',
+        [name, age, email],
+        (result: any) => {
+          resolve(result.insertId);
+        },
+        (error: any) => {
+          reject(error);
+        },
+      );
+    });
   }
 
-  // UPDATE USER
+  // UPDATE
   async updateUser(id: number, name: string, age: number, email: string = ''): Promise<number> {
-    const result = await this.executeSqlAsync(
-      'UPDATE users SET name = ?, age = ?, email = ? WHERE id = ?',
-      [name, age, email, id]
-    );
-    return result.rowsAffected!;
+    const db = await this.openDatabase();
+    return new Promise((resolve, reject) => {
+      db.executeSql(
+        'UPDATE users SET name = ?, age = ?, email = ? WHERE id = ?',
+        [name, age, email, id],
+        (result: any) => {
+          resolve(result.rowsAffected);
+        },
+        (error: any) => {
+          reject(error);
+        },
+      );
+    });
   }
 
-  // DELETE USER
+  // DELETE
   async deleteUser(id: number): Promise<number> {
-    const result = await this.executeSqlAsync('DELETE FROM users WHERE id = ?', [id]);
-    return result.rowsAffected!;
+    const db = await this.openDatabase();
+    return new Promise((resolve, reject) => {
+      db.executeSql(
+        'DELETE FROM users WHERE id = ?',
+        [id],
+        (result: any) => {
+          resolve(result.rowsAffected);
+        },
+        (error: any) => {
+          reject(error);
+        },
+      );
+    });
   }
 
-  // GET ALL USERS
+  // SELECT ALL
   async getAllUsers(): Promise<any[]> {
-    const result = await this.executeSqlAsync('SELECT * FROM users ORDER BY id DESC');
-    const users: any[] = [];
-    for (let i = 0; i < result.rows.length; i++) {
-      users.push(result.rows.item(i));
-    }
-    return users;
+    const db = await this.openDatabase();
+    return new Promise((resolve, reject) => {
+      db.executeSql(
+        'SELECT * FROM users ORDER BY id DESC',
+        [],
+        (result: any) => {
+          const users = [];
+          for (let i = 0; i < result.rows.length; i++) {
+            users.push(result.rows.item(i));
+          }
+          resolve(users);
+        },
+        (error: any) => {
+          reject(error);
+        },
+      );
+    });
   }
 
-  // GET USER BY ID
+  // SELECT BY ID
   async getUserById(id: number): Promise<any | null> {
-    const result = await this.executeSqlAsync('SELECT * FROM users WHERE id = ?', [id]);
-    return result.rows.length > 0 ? result.rows.item(0) : null;
+    const db = await this.openDatabase();
+    return new Promise((resolve, reject) => {
+      db.executeSql(
+        'SELECT * FROM users WHERE id = ?',
+        [id],
+        (result: any) => {
+          if (result.rows.length > 0) {
+            resolve(result.rows.item(0));
+          } else {
+            resolve(null);
+          }
+        },
+        (error: any) => {
+          reject(error);
+        },
+      );
+    });
   }
 
-  // INSERT ADDRESS
+  // Работа с адресами (дополнительная таблица)
   async insertAddress(userId: number, address: string, city: string = ''): Promise<number> {
-    const result = await this.executeSqlAsync(
-      'INSERT INTO addresses (user_id, address, city) VALUES (?, ?, ?)',
-      [userId, address, city]
-    );
-    return result.insertId!;
+    const db = await this.openDatabase();
+    return new Promise((resolve, reject) => {
+      db.executeSql(
+        'INSERT INTO addresses (user_id, address, city) VALUES (?, ?, ?)',
+        [userId, address, city],
+        (result: any) => {
+          resolve(result.insertId);
+        },
+        (error: any) => {
+          reject(error);
+        },
+      );
+    });
   }
 
-  // GET ADDRESSES BY USER ID
   async getAddressesByUserId(userId: number): Promise<any[]> {
-    const result = await this.executeSqlAsync('SELECT * FROM addresses WHERE user_id = ?', [userId]);
-    const addresses: any[] = [];
-    for (let i = 0; i < result.rows.length; i++) {
-      addresses.push(result.rows.item(i));
-    }
-    return addresses;
+    const db = await this.openDatabase();
+    return new Promise((resolve, reject) => {
+      db.executeSql(
+        'SELECT * FROM addresses WHERE user_id = ?',
+        [userId],
+        (result: any) => {
+          const addresses = [];
+          for (let i = 0; i < result.rows.length; i++) {
+            addresses.push(result.rows.item(i));
+          }
+          resolve(addresses);
+        },
+        (error: any) => {
+          reject(error);
+        },
+      );
+    });
   }
 
-  // CLOSE DATABASE
-  async closeDatabase(): Promise<void> {
+  closeDatabase() {
     if (this.db) {
-      await this.db.close();
+      this.db.close();
       this.db = null;
     }
   }

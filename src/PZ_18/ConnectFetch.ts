@@ -12,8 +12,6 @@ export class ConnectFetch {
         city,
       )}&appid=${apiKey}&units=metric&lang=ru`;
 
-      Alert.alert(urlString)
-
       const response = await fetch(urlString);
       if (!response.ok) {
         console.warn('Ошибка запроса:', response.status);
