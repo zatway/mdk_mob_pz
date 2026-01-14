@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   SafeAreaView,
   View,
@@ -8,108 +8,48 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
-  Alert, ViewStyle,
+  Alert,
+  ViewStyle,
 } from 'react-native';
-import {ConnectFetch} from './ConnectFetch';
-import {StaticWeatherAnalyze} from './StaticWeatherAnalyze';
 import { commonStyles } from '../styles/commonStyles';
-import {colors} from '../styles/colors.ts';
+import { colors } from '../styles/colors.ts';
+import {ConnectFetch} from './ConnectFetch.ts';
+import {StaticWeatherAnalyze} from './StaticWeatherAnalyze.ts';
 
-// API ключ OpenWeatherMap (замените на свой!)
 const API_KEY = '6024451a53cc956ea99b639a491a7b5c';
 
-const App_18: React.FC = () => {
-  const [city, setCity] = useState('Orenburg');
+const WeatherApp: React.FC = () => {
+  const [city, setCity] = useState('Оренбург');
   const [loading, setLoading] = useState(false);
-  const [weatherData, setWeatherData] = useState<any | null>(null);
-  const [iconUrl, setIconUrl] = useState<string>('');
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [iconUrl, setIconUrl] = useState(weatherData ? ConnectFetch.getIconUrl(weatherData.weather[0].icon) : '');
 
-  useEffect(() => {
-    updateWeatherData(city);
-  }, []);
-
-  const updateWeatherData = async (cityName: string) => {
-    if (API_KEY === undefined) {
-      Alert.alert(
-        'Ошибка',
-        'Необходимо указать API ключ OpenWeatherMap!',
-      );
-      return;
-    }
-
-    if(cityName.trim() === null || cityName.trim() === undefined) {
-      Alert.alert(
-        'Ошибка',
-        'Не введено название города',
-      );
+  const fetchWeather = useCallback(async (searchCity: string) => {
+    const trimmedCity = searchCity.trim();
+    if (!trimmedCity) {
+      Alert.alert('Ошибка', 'Введите название города');
       return;
     }
 
     setLoading(true);
-    try {
-      const transliterate = (text: string) =>
-        text
-          .replace(/а/g, 'a')
-          .replace(/б/g, 'b')
-          .replace(/в/g, 'v')
-          .replace(/г/g, 'g')
-          .replace(/д/g, 'd')
-          .replace(/е/g, 'e')
-          .replace(/ё/g, 'yo')
-          .replace(/ж/g, 'zh')
-          .replace(/з/g, 'z')
-          .replace(/и/g, 'i')
-          .replace(/й/g, 'y')
-          .replace(/к/g, 'k')
-          .replace(/л/g, 'l')
-          .replace(/м/g, 'm')
-          .replace(/н/g, 'n')
-          .replace(/о/g, 'o')
-          .replace(/п/g, 'p')
-          .replace(/р/g, 'r')
-          .replace(/с/g, 's')
-          .replace(/т/g, 't')
-          .replace(/у/g, 'u')
-          .replace(/ф/g, 'f')
-          .replace(/х/g, 'kh')
-          .replace(/ц/g, 'ts')
-          .replace(/ч/g, 'ch')
-          .replace(/ш/g, 'sh')
-          .replace(/щ/g, 'sch')
-          .replace(/ы/g, 'y')
-          .replace(/э/g, 'e')
-          .replace(/ю/g, 'yu')
-          .replace(/я/g, 'ya');
+    const data = await ConnectFetch.getJSON(trimmedCity, API_KEY);
 
-      const cityForQuery = transliterate(city.trim());
-      const json = await ConnectFetch.getJSON(cityForQuery, API_KEY);
-
-      if (!json) {
-        Alert.alert('Ошибка', `${cityName} - информация не найдена`);
-        setWeatherData(null);
-        setIconUrl('');
-      } else {
-        setWeatherData(json);
-        const icon = ConnectFetch.getIconUrl(json);
-        setIconUrl(icon);
-      }
-    } catch (error) {
-      Alert.alert('Ошибка', 'Не удалось получить данные о погоде');
-      setWeatherData(null);
-      setIconUrl('');
-    } finally {
-      setLoading(false);
+    if (data) {
+      setWeatherData(data);
+      setIconUrl(ConnectFetch.getIconUrl(data));
+    } else {
+      Alert.alert('Ошибка', `Город "${trimmedCity}" не найден`);
     }
-  };
+    setLoading(false);
+  }, []);
 
-  const handleSearch = () => {
-    if (city.trim()) {
-      updateWeatherData(city.trim());
-    }
-  };
+  useEffect(() => {
+    fetchWeather(city);
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Секция поиска */}
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.searchInput}
@@ -118,54 +58,34 @@ const App_18: React.FC = () => {
           placeholder="Введите город"
           placeholderTextColor="#9E9E9E"
         />
-        <TouchableOpacity style={styles.searchButton} onPress={handleSearch} disabled={loading}>
+        <TouchableOpacity
+          style={[styles.searchButton, loading && { opacity: 0.7 }]}
+          onPress={() => fetchWeather(city)}
+          disabled={loading}
+        >
           <Text style={styles.searchButtonText}>Поиск</Text>
         </TouchableOpacity>
       </View>
 
+      {/* Основной контент */}
       {loading ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#6200EE" />
-          <Text style={styles.loadingText}>Загрузка данных...</Text>
+        <View style={styles.center}>
+          <ActivityIndicator size="large" color={colors.primaryPurple} />
+          <Text style={styles.loadingText}>Загрузка...</Text>
         </View>
       ) : weatherData ? (
         <View style={styles.weatherContainer}>
-          {/* Город (сверху, по центру) */}
-          <Text style={styles.cityField}>
-            {StaticWeatherAnalyze.getCityField(weatherData)}
-          </Text>
+          <Text style={styles.cityField}>{StaticWeatherAnalyze.getCityField(weatherData)}</Text>
+          <Text style={styles.updatedField}>{StaticWeatherAnalyze.formatTime(weatherData.dt)}</Text>
 
-          {/* Время последнего обновления (под городом) */}
-          <Text style={styles.updatedField}>
-            {StaticWeatherAnalyze.getLastUpdateTime(weatherData)}
-          </Text>
+          {iconUrl && <Image source={{ uri: iconUrl }} style={styles.weatherIcon} />}
 
-          {/* Иконка погоды (по центру) */}
-          {iconUrl ? (
-            <Image
-              source={{uri: iconUrl}}
-              style={styles.weatherIcon}
-              resizeMode="contain"
-            />
-          ) : (
-            <View style={styles.weatherIconPlaceholder}>
-              <Text style={styles.weatherIconPlaceholderText}>🌤️</Text>
-            </View>
-          )}
-
-          {/* Детали (описание, влажность, давление) - под иконкой */}
-          <Text style={styles.detailsField}>
-            {StaticWeatherAnalyze.getDetailsField(weatherData)}
-          </Text>
-
-          {/* Температура (внизу, по центру) */}
-          <Text style={styles.temperatureField}>
-            {StaticWeatherAnalyze.getTemperatureField(weatherData)}
-          </Text>
+          <Text style={styles.detailsField}>{StaticWeatherAnalyze.getDetails(weatherData)}</Text>
+          <Text style={styles.temperatureField}>{weatherData.main.temp.toFixed(1)} ℃</Text>
         </View>
       ) : (
-        <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>Введите название города и нажмите "Поиск"</Text>
+        <View style={styles.center}>
+          <Text style={styles.emptyText}>Город не найден. Попробуйте другой запрос.</Text>
         </View>
       )}
     </SafeAreaView>
@@ -173,107 +93,41 @@ const App_18: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    ...commonStyles.container,
-    backgroundColor: colors.white,
-  },
+  container: { flex: 1, backgroundColor: colors.white },
   searchContainer: {
-    ...commonStyles.row,
+    flexDirection: 'row',
     padding: 16,
     backgroundColor: colors.backgroundGrey,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.divider,
-  } as ViewStyle,
+    alignItems: 'center',
+  },
   searchInput: {
     flex: 1,
+    height: 45,
     backgroundColor: colors.white,
     borderRadius: 8,
     paddingHorizontal: 12,
-    paddingVertical: 10,
-    marginRight: 8,
-    fontSize: 16,
     borderWidth: 1,
     borderColor: colors.divider,
+    marginRight: 8,
   },
   searchButton: {
     backgroundColor: colors.primaryPurple,
+    height: 45,
     paddingHorizontal: 20,
-    paddingVertical: 10,
     borderRadius: 8,
     justifyContent: 'center',
   },
-  searchButtonText: {
-    color: colors.white,
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  loadingContainer: {
-    ...commonStyles.containerCentered,
-  } as ViewStyle,
-  loadingText: {
-    marginTop: 12,
-    fontSize: 16,
-    color: colors.textTertiary,
-  },
-  weatherContainer: {
-    ...commonStyles.container,
-    padding: 16,
-  },
-  cityField: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: colors.textPrimary,
-    textAlign: 'center',
-    marginTop: 20,
-    marginBottom: 8,
-  },
-  updatedField: {
-    fontSize: 13,
-    color: colors.textTertiary,
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  weatherIcon: {
-    width: 200,
-    height: 200,
-    alignSelf: 'center',
-    marginVertical: 20,
-  },
-  weatherIconPlaceholder: {
-    width: 200,
-    height: 200,
-    alignSelf: 'center',
-    ...commonStyles.containerCentered,
-    marginVertical: 20,
-  } as ViewStyle,
-  weatherIconPlaceholderText: {
-    fontSize: 120,
-  },
-  detailsField: {
-    fontSize: 16,
-    color: colors.textSecondary,
-    textAlign: 'center',
-    marginBottom: 20,
-    lineHeight: 24,
-  },
-  temperatureField: {
-    fontSize: 40,
-    fontWeight: '700',
-    color: colors.textPrimary,
-    textAlign: 'center',
-    marginTop: 'auto',
-    marginBottom: 40,
-  },
-  emptyContainer: {
-    ...commonStyles.containerCentered,
-    padding: 20,
-  } as ViewStyle,
-  emptyText: {
-    fontSize: 16,
-    color: colors.greyMedium,
-    textAlign: 'center',
-  },
+  searchButtonText: { color: colors.white, fontWeight: 'bold' },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 },
+  weatherContainer: { flex: 1, alignItems: 'center', padding: 20 },
+  cityField: { fontSize: 26, fontWeight: 'bold', color: colors.textPrimary, marginTop: 20 },
+  updatedField: { color: colors.textTertiary, marginBottom: 20 },
+  weatherIcon: { width: 150, height: 150 },
+  iconPlaceholder: { fontSize: 100, marginVertical: 20 },
+  detailsField: { textAlign: 'center', fontSize: 16, lineHeight: 24, color: colors.textSecondary },
+  temperatureField: { fontSize: 48, fontWeight: 'bold', marginTop: 'auto', marginBottom: 40 },
+  loadingText: { marginTop: 10, color: colors.textTertiary },
+  emptyText: { color: colors.greyMedium, textAlign: 'center' },
 });
 
-export default App_18;
-
+export default WeatherApp;
