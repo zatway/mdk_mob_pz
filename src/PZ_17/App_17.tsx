@@ -225,7 +225,6 @@ const App_17: React.FC = () => {
   // EditImageActivity - редактирование изображения
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Редактирование изображения</Text>
 
       <View style={styles.imageContainer}>
         {isProcessing ? (

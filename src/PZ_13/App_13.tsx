@@ -68,9 +68,6 @@ const App_13: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>MediaService (демо)</Text>
-      <Text style={styles.subtitle}>Сервис воспроизведения музыки</Text>
-
       <View style={styles.statusBox}>
         <Text style={styles.statusLabel}>Статус сервиса:</Text>
         <View style={[styles.statusIndicator, {backgroundColor: getStateColor()}]} />

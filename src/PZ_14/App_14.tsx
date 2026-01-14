@@ -90,8 +90,6 @@ const App_14: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Изменение состояния</Text>
-      <Text style={styles.subtitle}>Сохранение и восстановление данных User</Text>
 
       <View style={styles.form}>
         <Text style={styles.label}>Имя:</Text>

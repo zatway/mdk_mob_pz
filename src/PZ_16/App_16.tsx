@@ -139,8 +139,6 @@ const App_16: React.FC = () => {
 
     return (
       <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>Работа с SQLite</Text>
-        <Text style={styles.subtitle}>Список пользователей</Text>
 
         <TouchableOpacity
           style={styles.addButton}
