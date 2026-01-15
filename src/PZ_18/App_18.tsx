@@ -22,7 +22,7 @@ const WeatherApp: React.FC = () => {
   const [city, setCity] = useState('Оренбург');
   const [loading, setLoading] = useState(false);
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
-  const [iconUrl, setIconUrl] = useState(weatherData ? ConnectFetch.getIconUrl(weatherData.weather[0].icon) : '');
+  const [iconUrl, setIconUrl] = useState('');
 
   const fetchWeather = useCallback(async (searchCity: string) => {
     const trimmedCity = searchCity.trim();

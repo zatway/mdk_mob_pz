@@ -11,6 +11,9 @@ buildscript {
         google()
         mavenCentral()
     }
+    configurations.all {
+            resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+        }
     dependencies {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
