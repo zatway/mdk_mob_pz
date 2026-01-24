@@ -26,6 +26,7 @@ import App_17 from './PZ_17/App_17.tsx';
 import App_18 from './PZ_18/App_18';
 import {commonStyles} from './styles/commonStyles.ts';
 import {colors} from './styles/colors.ts';
+import App_19 from './PZ_19/App_19.tsx';
 
 const PracticeWrapper = ({
   children,
@@ -153,6 +154,12 @@ const PracticeSelector = () => {
         <App_18 />
       </PracticeWrapper>
     );
+  if (selected === 19)
+    return (
+      <PracticeWrapper onBack={() => setSelected(null)}>
+        <App_19 />
+      </PracticeWrapper>
+    );
 
   return (
     <ScrollView
@@ -211,6 +218,9 @@ const PracticeSelector = () => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={() => setSelected(18)}>
         <Text style={styles.buttonText}>18 практика</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => setSelected(19)}>
+        <Text style={styles.buttonText}>19 практика</Text>
       </TouchableOpacity>
     </ScrollView>
   );
