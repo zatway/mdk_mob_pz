@@ -16,7 +16,6 @@ const App_13: React.FC = () => {
     serviceRef.current.setOnStateChange(setServiceState);
 
     return () => {
-      // Cleanup on unmount
       if (serviceRef.current) {
         serviceRef.current.stopService();
       }

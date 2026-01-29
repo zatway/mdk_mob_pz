@@ -15,6 +15,7 @@ const projects: Project[] = [
     {id: '4', title: 'Проект 4', description: 'Описание проекта 4'},
     {id: '5', title: 'Проект 5', description: 'Описание проекта 5'},
 ];
+
 const Projects = () => {
     const renderItem = ({item}: { item: Project }) => (
         <TouchableOpacity style={styles.projectCard}>

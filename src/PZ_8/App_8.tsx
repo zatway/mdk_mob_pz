@@ -5,7 +5,8 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Alert, ViewStyle,
+  Alert,
+  ViewStyle,
 } from 'react-native';
 import MethodChip from './MethodChip.tsx';
 import LabeledInput from './LabeledInput.tsx';
@@ -38,8 +39,12 @@ const App_8: React.FC = () => {
     useState<UserParcelable | null>(null);
 
   const isValid = useMemo(() => {
-    if (!name.trim()) return false;
-    if (!age.trim()) return false;
+    if (!name.trim()) {
+      return false;
+    }
+    if (!age.trim()) {
+      return false;
+    }
     const ageNum = Number(age);
     return !(!Number.isFinite(ageNum) || ageNum < 0);
   }, [name, age]);
@@ -92,7 +97,6 @@ const App_8: React.FC = () => {
           phone: phone || undefined,
           address: address || undefined,
         });
-        // Simulate parcel write/read cycle
         const blob = user.writeToParcel();
         const recreated = UserParcelable.createFromParcel(blob);
         setReceivedParcelable(recreated);
@@ -294,5 +298,3 @@ const styles = StyleSheet.create({
 });
 
 export default App_8;
-
-

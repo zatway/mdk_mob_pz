@@ -9,32 +9,9 @@ interface Props {
 }
 
 const MainScreen: React.FC<Props> = ({ navigation }) => {
-  console.log('MainScreen: render');
-
-  React.useEffect(() => {
-    console.log('MainScreen: componentDidMount');
-    return () => {
-      console.log('MainScreen: componentWillUnmount');
-    };
-  }, []);
-
-  React.useEffect(() => {
-    console.log('MainScreen: componentDidUpdate');
-  });
-
-  const handleNormalPress = () => {
-    console.log('MainScreen: Navigating to NormalScreen');
-    navigation.navigate('Normal');
-  };
-
-  const handleDialogPress = () => {
-    console.log('MainScreen: Navigating to DialogScreen');
-    navigation.navigate('Dialog');
-  };
-
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Main</Text>
+      <Text style={styles.title}>Главная страница</Text>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Normal')}>
         <Text style={styles.buttonText}>ЗАПУСК ОБЫЧНОЙ ДЕЯТЕЛЬНОСТИ</Text>
       </TouchableOpacity>

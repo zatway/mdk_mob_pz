@@ -41,20 +41,20 @@ const ImageViewer = () => {
                 resizeMode="contain"
             />
             <Text style={styles.imageNumber}>
-                Image {currentIndex + 1} of {images.length}
+                Изображение {currentIndex + 1} из {images.length}
             </Text>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
                     style={styles.button}
                     onPress={handlePrevious}
                 >
-                    <Text style={styles.buttonText}>Previous</Text>
+                    <Text style={styles.buttonText}>Предыдущий</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.button}
                     onPress={handleNext}
                 >
-                    <Text style={styles.buttonText}>Next</Text>
+                    <Text style={styles.buttonText}>Следующий</Text>
                 </TouchableOpacity>
             </View>
         </View>

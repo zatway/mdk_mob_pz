@@ -41,7 +41,6 @@ const App_7: React.FC = () => {
         <Image source={imageSource} style={styles.image} resizeMode="contain" />
       </View>
 
-      {/* Bottom navigation */}
       <View style={styles.bottomNav}>
         {TABS.map(tab => {
           const isActive = tab.key === active;

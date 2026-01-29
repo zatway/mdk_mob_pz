@@ -69,7 +69,6 @@ const App_6: React.FC = () => {
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        {/* Compute area (analog of LinearLayout row) */}
         <View style={styles.computeRow}>
           <TextInput
             testID="number1"
@@ -79,7 +78,7 @@ const App_6: React.FC = () => {
             placeholder="0"
             keyboardType="numeric"
           />
-          <Text testID="operation" style={styles.operation}>
+          <Text testID="operation" style={styles.text}>
             {operation ?? ''}
           </Text>
           <TextInput
@@ -90,17 +89,15 @@ const App_6: React.FC = () => {
             placeholder="0"
             keyboardType="numeric"
           />
-          <Text style={styles.equal}>=</Text>
+          <Text style={styles.text}>=</Text>
           <Text testID="result" style={styles.result}>
             {result}
           </Text>
         </View>
 
-        {/* Grid of buttons */}
         <View style={styles.grid}>
-          {/* + spans 2 rows (imitated by a tall button) */}
           <TouchableOpacity
-            style={[styles.button, styles.buttonTall]}
+            style={styles.button}
             onPress={() => onPressOperation('+')}>
             <Text style={styles.buttonText}>+</Text>
           </TouchableOpacity>
@@ -113,7 +110,7 @@ const App_6: React.FC = () => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => onPressOperation('÷')}>
-            <Text style={styles.buttonText}>÷</Text>
+            <Text style={styles.buttonText}>/</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
@@ -121,7 +118,6 @@ const App_6: React.FC = () => {
             <Text style={styles.buttonText}>×</Text>
           </TouchableOpacity>
 
-          {/* C spans 3 columns */}
           <TouchableOpacity style={[styles.button, styles.buttonWide]} onPress={onClear}>
             <Text style={styles.buttonText}>C</Text>
           </TouchableOpacity>
@@ -154,22 +150,17 @@ const styles = StyleSheet.create({
     width: 90,
     textAlign: 'right',
   },
-  operation: {
+  text: {
     width: 40,
     textAlign: 'center',
     fontSize: 30,
-    color: colors.textSecondary,
-  },
-  equal: {
-    width: 24,
-    textAlign: 'center',
-    fontSize: 20,
-    color: colors.textTertiary,
+    color: colors.textDark,
   },
   result: {
-    minWidth: 80,
-    textAlign: 'right',
+    minWidth: 40,
+    textAlign: 'center',
     fontSize: 20,
+    borderColor: colors.infoLight,
     color: colors.black,
   },
   grid: {

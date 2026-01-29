@@ -15,14 +15,20 @@ type ButtonColors = {
   yellow: string;
   green: string;
 };
+
 type ColorName = 'Красный' | 'Жёлтый' | 'Зелёный';
 
+const red = '#FF0000';
+const yellow = '#FFFF00';
+const green = '#00FF00';
+const white = '#FFFFFF';
+
 const App_3: React.FC = () => {
-  const [backgroundColor, setBackgroundColor] = useState<string>('#FF0000');
+  const [backgroundColor, setBackgroundColor] = useState<string>(red);
   const [buttonColors, setButtonColors] = useState<ButtonColors>({
-    red: '#FF0000',
-    yellow: '#FFFF00',
-    green: '#00FF00',
+    red,
+    yellow,
+    green,
   });
 
   const [currentColor, setCurrentColor] = useState<ColorName>('Красный');
@@ -30,9 +36,9 @@ const App_3: React.FC = () => {
     setBackgroundColor(color);
     setCurrentColor(colorName);
     setButtonColors({
-      red: color === '#FF0000' ? '#FF0000' : '#FFFFFF',
-      yellow: color === '#FFFF00' ? '#FFFF00' : '#FFFFFF',
-      green: color === '#00FF00' ? '#00FF00' : '#FFFFFF',
+      red: color === red ? red : white,
+      yellow: color === yellow ? yellow : white,
+      green: color === green ? green : white,
     });
   };
 
@@ -41,17 +47,17 @@ const App_3: React.FC = () => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={[styles.button, {backgroundColor: buttonColors.red}]}
-          onPress={() => handleColorChange('#FF0000', 'Красный')}>
+          onPress={() => handleColorChange(red, 'Красный')}>
           <Text style={styles.buttonText}>Красный</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.button, {backgroundColor: buttonColors.yellow}]}
-          onPress={() => handleColorChange('#FFFF00', 'Жёлтый')}>
+          onPress={() => handleColorChange(yellow, 'Жёлтый')}>
           <Text style={styles.buttonText}>Жёлтый</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.button, {backgroundColor: buttonColors.green}]}
-          onPress={() => handleColorChange('#00FF00', 'Зелёный')}>
+          onPress={() => handleColorChange(green, 'Зелёный')}>
           <Text style={styles.buttonText}>Зелёный</Text>
         </TouchableOpacity>
       </View>

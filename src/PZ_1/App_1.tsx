@@ -15,13 +15,14 @@ const App_1 = () => {
         <Stack.Screen
           name="Normal"
           component={NormalScreen}
-          options={{title: 'Normal Screen'}}
+          options={{
+            headerShown: false,
+          }}
         />
         <Stack.Screen
           name="Dialog"
           component={DialogScreen}
           options={{
-            title: 'Dialog Screen',
             presentation: 'modal',
             headerShown: false,
           }}

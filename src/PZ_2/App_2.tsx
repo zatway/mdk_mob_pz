@@ -17,12 +17,13 @@ const App_2 = () => {
                 break;
             case 'Проекты':
                 setSelectTab(2);
-                break
+                break;
             case 'Достижения':
                 setSelectTab(3);
                 break;
         }
-    }
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>

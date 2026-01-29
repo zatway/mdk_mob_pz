@@ -70,7 +70,6 @@ const App_12: React.FC = () => {
   };
 
   const pause = () => setPlayerState(prev => (prev === 'playing' ? 'paused' : prev));
-  const resume = () => setPlayerState(prev => (prev === 'paused' ? 'playing' : prev));
   const stop = () => {
     setPlayerState('stopped');
     setPositionMs(0);
@@ -113,7 +112,7 @@ const App_12: React.FC = () => {
       </View>
 
       <View style={styles.controlsRow}>
-        <ControlButton label={playerState === 'preparing' ? 'Подготовка…' : 'Воспроизвести'} onPress={prepareAndStart} disabled={playerState === 'preparing'} />
+        <ControlButton label={playerState === 'preparing' ? 'Подготовка' : 'Воспроизвести'} onPress={prepareAndStart} disabled={playerState === 'preparing'} />
       </View>
 
       <View style={styles.controlsRow}>

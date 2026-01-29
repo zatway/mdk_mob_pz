@@ -33,11 +33,16 @@ const App_11: React.FC = () => {
   const [unit, setUnit] = useState('шт');
 
   const addNew = () => {
-    if (!title.trim()) return Alert.alert('Ошибка', 'Введите название товара');
+    if (!title.trim()) {
+      return Alert.alert('Ошибка', 'Введите название товара');
+    }
     const q = Number(quantity || '0');
-    if (!Number.isFinite(q) || q <= 0)
+    if (!Number.isFinite(q) || q <= 0) {
       return Alert.alert('Ошибка', 'Количество должно быть больше 0');
-    if (!unit.trim()) return Alert.alert('Ошибка', 'Введите единицу измерения');
+    }
+    if (!unit.trim()) {
+      return Alert.alert('Ошибка', 'Введите единицу измерения');
+    }
     const p: Product = {
       id: String(Date.now()),
       title: title.trim(),
@@ -83,7 +88,7 @@ const App_11: React.FC = () => {
             <Text style={styles.smallBtnText}>+</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.smallBtn, {backgroundColor: '#E53935'}]}
+            style={[styles.smallBtn, {backgroundColor: colors.danger}]}
             onPress={() => removeIfZero(item.id)}>
             <Text style={styles.smallBtnText}>×</Text>
           </TouchableOpacity>

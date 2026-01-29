@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,12 +9,14 @@ import {
   ToastAndroid,
   Alert,
   Platform,
-  Dimensions, ViewStyle, ImageStyle,
+  Dimensions,
+  ViewStyle,
+  ImageStyle,
 } from 'react-native';
 import {commonStyles} from '../styles/commonStyles.ts';
 import {colors} from '../styles/colors.ts';
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 
 type TimeOfDay = 'morning' | 'day' | 'evening' | 'night';
 
@@ -44,10 +46,8 @@ const App_5: React.FC = () => {
         break;
     }
 
-    Alert.alert(title, message, [{ text: 'OK' }]);
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(`${title}: ${message}`, ToastAndroid.SHORT);
-    }
+    Alert.alert(title, message, [{text: 'OK'}]);
+    ToastAndroid.show(`${title}: ${message}`, ToastAndroid.SHORT);
   };
 
   const morningImage = require('./assets/morning.png');
@@ -73,20 +73,31 @@ const App_5: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => changeTime('morning')}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => changeTime('morning')}>
           <Text style={styles.buttonText}>Утро</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => changeTime('day')}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => changeTime('day')}>
           <Text style={styles.buttonText}>День</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => changeTime('evening')}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => changeTime('evening')}>
           <Text style={styles.buttonText}>Вечер</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => changeTime('night')}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => changeTime('night')}>
           <Text style={styles.buttonText}>Ночь</Text>
         </TouchableOpacity>
       </View>
-      <ImageBackground source={backgrounds[currentTime]} style={styles.background} resizeMode="cover">
+      <ImageBackground
+        source={backgrounds[currentTime]}
+        style={styles.background}
+        resizeMode="cover">
         {currentTime === 'morning' && (
           <>
             <TouchableOpacity
@@ -111,7 +122,9 @@ const App_5: React.FC = () => {
                   height: 80,
                 },
               ]}
-              onPress={() => showToast('Миска для еды. Наполни её вкусняшками!')}
+              onPress={() =>
+                showToast('Миска для еды. Наполни её вкусняшками!')
+              }
             />
             <TouchableOpacity
               style={[
@@ -125,7 +138,6 @@ const App_5: React.FC = () => {
               ]}
               onPress={() => showToast('Еда для котика. Свежий корм!')}
             />
-            {/* Кнопка для игрушки */}
             <TouchableOpacity
               style={[
                 styles.interactiveButton,
