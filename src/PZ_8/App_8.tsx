@@ -165,8 +165,6 @@ const App_8: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>MainActivity</Text>
-
       <View style={styles.methodsRow}>
         <MethodChip
           label="putExtra()"

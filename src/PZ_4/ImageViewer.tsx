@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   } as ViewStyle,
   button: {
-    backgroundColor: colors.primaryBlue,
+    backgroundColor: colors.primary,
     paddingVertical: 12,
     paddingHorizontal: 30,
     borderRadius: 8,

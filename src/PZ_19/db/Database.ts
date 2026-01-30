@@ -76,7 +76,7 @@ export const getAllUsers = async (): Promise<User[]> => {
 };
 
 export const updateUser = async (user: User): Promise<boolean> => {
-  if (!user.id) return false;
+  if (!user.id) {return false;}
   try {
     await database().ref(`${USERS_REF}/${user.id}`).update({
       name: user.name,
