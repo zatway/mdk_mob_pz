@@ -7,7 +7,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  Alert, ViewStyle,
+  Alert,
+  ViewStyle,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {User} from './User.ts';
@@ -22,7 +23,6 @@ const App_14: React.FC = () => {
   const [savedUser, setSavedUser] = useState<User | null>(null);
   const [imageVisible, setImageVisible] = useState(false);
 
-  // Загрузка данных при старте
   useEffect(() => {
     loadData();
   }, []);
@@ -58,9 +58,7 @@ const App_14: React.FC = () => {
         setAge(String(user.getAge()));
         setImageVisible(true);
       }
-    } catch (error) {
-      // Данных нет или ошибка чтения
-    }
+    } catch (error) {}
   };
 
   const getData = () => {
@@ -90,7 +88,6 @@ const App_14: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-
       <View style={styles.form}>
         <Text style={styles.label}>Имя:</Text>
         <TextInput
@@ -111,11 +108,15 @@ const App_14: React.FC = () => {
       </View>
 
       <View style={styles.buttonsRow}>
-        <TouchableOpacity style={[styles.button, styles.saveButton]} onPress={saveData}>
+        <TouchableOpacity
+          style={[styles.button, styles.saveButton]}
+          onPress={saveData}>
           <Text style={styles.buttonText}>СОХРАНИТЬ</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.button, styles.getButton]} onPress={getData}>
+        <TouchableOpacity
+          style={[styles.button, styles.getButton]}
+          onPress={getData}>
           <Text style={styles.buttonText}>ПОЛУЧИТЬ ДАННЫЕ</Text>
         </TouchableOpacity>
       </View>
@@ -139,7 +140,9 @@ const App_14: React.FC = () => {
         </View>
       )}
 
-      <TouchableOpacity style={[styles.button, styles.clearButton]} onPress={clearData}>
+      <TouchableOpacity
+        style={[styles.button, styles.clearButton]}
+        onPress={clearData}>
         <Text style={styles.buttonText}>Очистить данные</Text>
       </TouchableOpacity>
     </SafeAreaView>

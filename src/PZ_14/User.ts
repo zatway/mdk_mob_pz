@@ -23,12 +23,10 @@ export class User {
     this.age = age;
   }
 
-  // Сериализация в JSON для сохранения
   toJSON(): string {
     return JSON.stringify({name: this.name, age: this.age});
   }
 
-  // Десериализация из JSON
   static fromJSON(json: string): User {
     const data = JSON.parse(json);
     return new User(data.name, data.age);

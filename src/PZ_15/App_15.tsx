@@ -68,7 +68,7 @@ const App_15 = () => {
       return;
     }
 
-    setStatus('Сохранение...');
+    setStatus('Сохранение');
 
     try {
       await RNFS.writeFile(path, text, 'utf8');
@@ -88,7 +88,7 @@ const App_15 = () => {
       return;
     }
 
-    setStatus('Чтение...');
+    setStatus('Чтение');
 
     try {
       const exists = await RNFS.exists(path);

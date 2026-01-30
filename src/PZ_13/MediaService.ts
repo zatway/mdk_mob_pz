@@ -17,14 +17,15 @@ export class MediaService {
     this.onStateChange = callback;
   }
 
-  // Simulate startService() -> onStartCommand()
   startService() {
-    if (this.state !== 'stopped') return;
+    if (this.state !== 'stopped') {
+      return;
+    }
 
     this.state = 'starting';
     this.onStateChange?.(this.state);
 
-    // Simulate service initialization
+    //Симуляция инициализации сервиса
     setTimeout(() => {
       this.state = 'running';
       this.onStateChange?.(this.state);
@@ -32,9 +33,10 @@ export class MediaService {
     }, 1000);
   }
 
-  // Simulate stopService() -> onDestroy()
   stopService() {
-    if (this.state === 'stopped') return;
+    if (this.state === 'stopped') {
+      return;
+    }
 
     this.state = 'stopping';
     this.onStateChange?.(this.state);
@@ -48,7 +50,6 @@ export class MediaService {
   }
 
   private startPlayback() {
-    // Simulate audio playback with timer
     this.timer = setInterval(() => {
     }, 1000);
   }
@@ -60,7 +61,6 @@ export class MediaService {
     }
   }
 
-  // Additional service functions
   pauseService() {
     if (this.state === 'running') {
       this.stopPlayback();

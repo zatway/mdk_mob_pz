@@ -16,8 +16,9 @@ const App_19: React.FC = () => {
   useEffect(() => {
     const unsubscribe = subscribeToAuth(user => {
       setAuthorizedUser(user);
-      if (initializing)
+      if (initializing) {
         setInitializing(false);
+      }
     });
 
     return () => unsubscribe();

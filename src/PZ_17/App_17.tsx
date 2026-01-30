@@ -8,7 +8,8 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View, ViewStyle,
+  View,
+  ViewStyle,
 } from 'react-native';
 import {
   ImageLibraryOptions,
@@ -37,7 +38,7 @@ const App_17: React.FC = () => {
       mediaType: 'photo',
       quality: 1,
     };
-    launchImageLibrary(options, async (response) => {
+    launchImageLibrary(options, async response => {
       if (response.didCancel) return;
       if (response.errorMessage) {
         Alert.alert('Ошибка', response.errorMessage);
@@ -65,8 +66,7 @@ const App_17: React.FC = () => {
   }
 
   const getRotationMode = (angle: number): RotationMode => {
-    // angle должен быть 0, 90, 180, 270
-    const normalized = ((angle % 360) + 360) % 360; // нормализуем в [0, 360)
+    const normalized = ((angle % 360) + 360) % 360;
     switch (normalized) {
       case 90:
         return RotationMode.R90;
@@ -75,7 +75,7 @@ const App_17: React.FC = () => {
       case 270:
         return RotationMode.R270;
       default:
-        return RotationMode.R90; // на случай 0 или некорректного значения
+        return RotationMode.R90;
     }
   };
 
@@ -84,21 +84,22 @@ const App_17: React.FC = () => {
     setIsProcessing(true);
 
     try {
-      // Считаем новый угол
-      const newRotation = direction === 'right'
-        ? (rotation + 90) % 360
-        : (rotation - 90 + 360) % 360; // +360 чтобы не было отрицательного
+      const newRotation =
+        direction === 'right'
+          ? (rotation + 90) % 360
+          : (rotation - 90 + 360) % 360;
 
-      // Выбираем RotationMode
       const rotationMode = getRotationMode(newRotation);
 
-      const result = await PhotoManipulator.rotateImage(editedImage, rotationMode);
+      const result = await PhotoManipulator.rotateImage(
+        editedImage,
+        rotationMode,
+      );
 
       setEditedImage(result);
       setRotation(newRotation);
-
     } catch {
-      Alert.alert("Ошибка", "Не удалось повернуть изображение");
+      Alert.alert('Ошибка', 'Не удалось повернуть изображение');
     } finally {
       setIsProcessing(false);
     }
@@ -108,10 +109,13 @@ const App_17: React.FC = () => {
     if (!editedImage) return;
     setIsProcessing(true);
     try {
-      const result = await PhotoManipulator.flipImage(editedImage, FlipMode.Horizontal);
+      const result = await PhotoManipulator.flipImage(
+        editedImage,
+        FlipMode.Horizontal,
+      );
       setEditedImage(result);
     } catch {
-      Alert.alert("Ошибка", "Не удалось отразить изображение");
+      Alert.alert('Ошибка', 'Не удалось отразить изображение');
     } finally {
       setIsProcessing(false);
     }
@@ -121,10 +125,13 @@ const App_17: React.FC = () => {
     if (!editedImage) return;
     setIsProcessing(true);
     try {
-      const result = await PhotoManipulator.flipImage(editedImage, FlipMode.Vertical);
+      const result = await PhotoManipulator.flipImage(
+        editedImage,
+        FlipMode.Vertical,
+      );
       setEditedImage(result);
     } catch {
-      Alert.alert("Ошибка", "Не удалось отразить изображение");
+      Alert.alert('Ошибка', 'Не удалось отразить изображение');
     } finally {
       setIsProcessing(false);
     }
@@ -135,85 +142,52 @@ const App_17: React.FC = () => {
     setIsProcessing(true);
 
     try {
-      const size = await new Promise<{ width: number; height: number }>((resolve, reject) => {
-        RNImage.getSize(
-          editedImage.toString(),
-          (width, height) => resolve({ width, height }),
-          reject
-        );
-      });
+      const size = await new Promise<{width: number; height: number}>(
+        (resolve, reject) => {
+          RNImage.getSize(
+            editedImage.toString(),
+            (width, height) => resolve({width, height}),
+            reject,
+          );
+        },
+      );
 
       const newWidth = Math.round(size.width * scale);
       const newHeight = Math.round(size.height * scale);
 
       const result = await PhotoManipulator.crop(
         editedImage,
-        { x: 0, y: 0, width: size.width, height: size.height },
-        { width: newWidth, height: newHeight }
+        {x: 0, y: 0, width: size.width, height: size.height},
+        {width: newWidth, height: newHeight},
       );
 
       setEditedImage(result);
-
     } catch {
-      Alert.alert("Ошибка", "Не удалось изменить размер изображения");
+      Alert.alert('Ошибка', 'Не удалось изменить размер изображения');
     } finally {
       setIsProcessing(false);
     }
   };
 
-  const cropImage = async () => {
-    if (!editedImage) return;
-    setIsProcessing(true);
-
-    try {
-      const size = await new Promise<{width: number, height: number}>((resolve, reject) => {
-        RNImage.getSize(
-            editedImage.toString(),
-          (width, height) => resolve({width, height}),
-          reject
-        );
-      });
-
-      const cropWidth = size.width * 0.8;
-      const cropHeight = size.height * 0.8;
-
-      const rect = {
-        x: (size.width - cropWidth) / 2,
-        y: (size.height - cropHeight) / 2,
-        width: cropWidth,
-        height: cropHeight,
-      };
-
-      const result = await PhotoManipulator.crop(editedImage, rect);
-      setEditedImage(result);
-
-    } catch {
-      Alert.alert("Ошибка", "Не удалось обрезать изображение");
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  // Сброс к оригиналу
   const resetImage = () => {
     if (imageUri) {
-      setEditedImage(imageUri)
+      setEditedImage(imageUri);
     }
   };
 
-  // Возврат на главный экран
   const goHome = () => {
     setScreen('Main');
     setImageUri(null);
     setEditedImage(null);
   };
 
-  // MainActivity - выбор фотографии
   if (screen === 'Main') {
     return (
       <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Редактор изображений</Text>
-        <Text style={styles.subtitle}>Выберите фотографию для редактирования</Text>
+        <Text style={styles.subtitle}>
+          Выберите фотографию для редактирования
+        </Text>
 
         <TouchableOpacity style={styles.pickButton} onPress={pickPhoto}>
           <Text style={styles.pickButtonText}>📷 Выбрать фотографию</Text>
@@ -222,28 +196,34 @@ const App_17: React.FC = () => {
     );
   }
 
-  // EditImageActivity - редактирование изображения
   return (
     <SafeAreaView style={styles.container}>
-
       <View style={styles.imageContainer}>
         {isProcessing ? (
           <ActivityIndicator size="large" color="#6200EE" />
         ) : (
           editedImage && (
-            <Image source={{uri: editedImage.toString()}} style={styles.image} resizeMode="contain" />
+            <Image
+              source={{uri: editedImage.toString()}}
+              style={styles.image}
+              resizeMode="contain"
+            />
           )
         )}
       </View>
 
       <View style={styles.controlsRow}>
-        <TouchableOpacity style={styles.controlButton} onPress={() => rotateImage('left')} disabled={isProcessing}>
-          <Text style={styles.controlButtonText}>↺</Text>
+        <TouchableOpacity
+          style={styles.controlButton}
+          onPress={() => rotateImage('left')}
+          disabled={isProcessing}>
           <Text style={styles.controlButtonLabel}>Влево</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.controlButton} onPress={() => rotateImage('right')} disabled={isProcessing}>
-          <Text style={styles.controlButtonText}>↻</Text>
+        <TouchableOpacity
+          style={styles.controlButton}
+          onPress={() => rotateImage('right')}
+          disabled={isProcessing}>
           <Text style={styles.controlButtonLabel}>Вправо</Text>
         </TouchableOpacity>
 
@@ -251,7 +231,6 @@ const App_17: React.FC = () => {
           style={styles.controlButton}
           onPress={flipHorizontally}
           disabled={isProcessing}>
-          <Text style={styles.controlButtonText}>⇄</Text>
           <Text style={styles.controlButtonLabel}>Гориз.</Text>
         </TouchableOpacity>
 
@@ -259,28 +238,30 @@ const App_17: React.FC = () => {
           style={styles.controlButton}
           onPress={flipVertically}
           disabled={isProcessing}>
-          <Text style={styles.controlButtonText}>⇅</Text>
           <Text style={styles.controlButtonLabel}>Вертик.</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.additionalControlsRow}>
-        <TouchableOpacity style={styles.additionalButton} onPress={resetImage} disabled={isProcessing}>
-          <Text style={styles.additionalButtonText}>🔄 Сброс</Text>
+        <TouchableOpacity
+          style={styles.additionalButton}
+          onPress={resetImage}
+          disabled={isProcessing}>
+          <Text style={styles.additionalButtonText}>Сброс</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.additionalButton}
           onPress={() => resizeImage(0.8)}
           disabled={isProcessing}>
-          <Text style={styles.additionalButtonText}>🔍 Уменьшить</Text>
+          <Text style={styles.additionalButtonText}>Уменьшить</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.additionalButton}
           onPress={() => resizeImage(1.2)}
           disabled={isProcessing}>
-          <Text style={styles.additionalButtonText}>🔍 Увеличить</Text>
+          <Text style={styles.additionalButtonText}>Увеличить</Text>
         </TouchableOpacity>
       </View>
 

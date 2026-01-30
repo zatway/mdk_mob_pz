@@ -1,10 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {SafeAreaView, View, Text, StyleSheet, TouchableOpacity, Alert, ViewStyle} from 'react-native';
+import {SafeAreaView, View, Text, StyleSheet, TouchableOpacity, ViewStyle} from 'react-native';
 import {ServiceState} from './ServiceState.ts';
 import {MediaService} from './MediaService.ts';
 import {colors} from '../styles/colors.ts';
 import {commonStyles} from '../styles/commonStyles.ts';
-
 
 const App_13: React.FC = () => {
   const [serviceState, setServiceState] = useState<ServiceState>('stopped');

@@ -86,11 +86,9 @@ const App_16: React.FC = () => {
 
     try {
       if (editingUserId) {
-        // UPDATE
         await dbHelper.updateUser(editingUserId, name.trim(), ageNum, email.trim());
         Alert.alert('Успех', 'Пользователь обновлен');
       } else {
-        // INSERT
         await dbHelper.insertUser(name.trim(), ageNum, email.trim());
         Alert.alert('Успех', 'Пользователь добавлен');
       }
@@ -121,7 +119,6 @@ const App_16: React.FC = () => {
     ]);
   };
 
-  // MainActivity - список пользователей
   if (screen === 'Main') {
     const renderUser = ({item}: {item: User}) => (
       <TouchableOpacity

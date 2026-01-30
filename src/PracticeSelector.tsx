@@ -4,7 +4,9 @@ import {
   TouchableOpacity,
   Text,
   StyleSheet,
-  ScrollView, ViewStyle, TextStyle,
+  ScrollView,
+  ViewStyle,
+  TextStyle,
 } from 'react-native';
 import App_1 from './PZ_1/App_1';
 import App_2 from './PZ_2/App_2';
@@ -46,24 +48,27 @@ const PracticeWrapper = ({
 const PracticeSelector = () => {
   const [selected, setSelected] = useState<null | number>(null);
 
-  if (selected === 1)
+  if (selected === 1) {
     return (
       <PracticeWrapper onBack={() => setSelected(null)}>
         <App_1 />
       </PracticeWrapper>
     );
-  if (selected === 2)
+  }
+  if (selected === 2) {
     return (
       <PracticeWrapper onBack={() => setSelected(null)}>
         <App_2 />
       </PracticeWrapper>
     );
-  if (selected === 3)
+  }
+  if (selected === 3) {
     return (
       <PracticeWrapper onBack={() => setSelected(null)}>
         <App_3 />
       </PracticeWrapper>
     );
+  }
   if (selected === 4)
     return (
       <PracticeWrapper onBack={() => setSelected(null)}>

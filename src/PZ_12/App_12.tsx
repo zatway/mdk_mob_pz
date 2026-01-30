@@ -30,7 +30,7 @@ const App_12: React.FC = () => {
 
   useEffect(() => {
     if (isPlaying) {
-      if (timerRef.current) clearInterval(timerRef.current as unknown as number);
+      if (timerRef.current) {clearInterval(timerRef.current as unknown as number);}
       timerRef.current = setInterval(() => {
         setPositionMs(prev => {
           const next = prev + 500;
@@ -91,7 +91,7 @@ const App_12: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Аудиоплеер (демо)</Text>
+      <Text style={styles.title}>Аудио плеер (демо)</Text>
       <Text style={styles.subtitle}>Источник: {sourceValue}</Text>
 
       <View style={styles.rowWrap}>

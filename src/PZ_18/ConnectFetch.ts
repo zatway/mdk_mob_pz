@@ -1,5 +1,3 @@
-import {Alert} from 'react-native';
-
 export class ConnectFetch {
   private static readonly OPEN_WEATHER_MAP_API =
     'https://api.openweathermap.org/data/2.5/weather';

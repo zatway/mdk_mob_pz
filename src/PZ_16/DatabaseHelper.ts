@@ -72,7 +72,6 @@ export class DatabaseHelper {
     });
   }
 
-  // INSERT
   async insertUser(name: string, age: number, email: string = ''): Promise<number> {
     const db = await this.openDatabase();
     return new Promise((resolve, reject) => {
@@ -89,7 +88,6 @@ export class DatabaseHelper {
     });
   }
 
-  // UPDATE
   async updateUser(id: number, name: string, age: number, email: string = ''): Promise<number> {
     const db = await this.openDatabase();
     return new Promise((resolve, reject) => {
@@ -106,7 +104,6 @@ export class DatabaseHelper {
     });
   }
 
-  // DELETE
   async deleteUser(id: number): Promise<number> {
     const db = await this.openDatabase();
     return new Promise((resolve, reject) => {
@@ -123,7 +120,6 @@ export class DatabaseHelper {
     });
   }
 
-  // SELECT ALL
   async getAllUsers(): Promise<any[]> {
     const db = await this.openDatabase();
     return new Promise((resolve, reject) => {
@@ -144,7 +140,6 @@ export class DatabaseHelper {
     });
   }
 
-  // SELECT BY ID
   async getUserById(id: number): Promise<any | null> {
     const db = await this.openDatabase();
     return new Promise((resolve, reject) => {
@@ -163,49 +158,5 @@ export class DatabaseHelper {
         },
       );
     });
-  }
-
-  // Работа с адресами (дополнительная таблица)
-  async insertAddress(userId: number, address: string, city: string = ''): Promise<number> {
-    const db = await this.openDatabase();
-    return new Promise((resolve, reject) => {
-      db.executeSql(
-        'INSERT INTO addresses (user_id, address, city) VALUES (?, ?, ?)',
-        [userId, address, city],
-        (result: any) => {
-          resolve(result.insertId);
-        },
-        (error: any) => {
-          reject(error);
-        },
-      );
-    });
-  }
-
-  async getAddressesByUserId(userId: number): Promise<any[]> {
-    const db = await this.openDatabase();
-    return new Promise((resolve, reject) => {
-      db.executeSql(
-        'SELECT * FROM addresses WHERE user_id = ?',
-        [userId],
-        (result: any) => {
-          const addresses = [];
-          for (let i = 0; i < result.rows.length; i++) {
-            addresses.push(result.rows.item(i));
-          }
-          resolve(addresses);
-        },
-        (error: any) => {
-          reject(error);
-        },
-      );
-    });
-  }
-
-  closeDatabase() {
-    if (this.db) {
-      this.db.close();
-      this.db = null;
-    }
   }
 }

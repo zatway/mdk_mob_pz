@@ -1,4 +1,4 @@
-interface WeatherData {
+export interface WeatherData {
   name: string;
   dt: number;
   sys: { country: string };
